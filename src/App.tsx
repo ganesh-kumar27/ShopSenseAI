@@ -18,7 +18,7 @@ import { Product, CartItem } from './types/Product';
 
 function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const [wishlistItems, setWishlistItems] = useState<string[]>(['1', '3', '5', '7']); // Pre-populate with some items
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isImageSearchOpen, setIsImageSearchOpen] = useState(false);
   const [isOccasionMenuOpen, setIsOccasionMenuOpen] = useState(false);
