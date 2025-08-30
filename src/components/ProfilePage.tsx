@@ -3,10 +3,10 @@ import { ArrowLeft, User, Mail, Phone, MapPin, Calendar, Camera, Save, Edit3 } f
 
 interface ProfilePageProps {
   onBack: () => void;
-  
+  onProfileUpdate?: (profile: any) => void;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ onBack, onProfileUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     firstName: 'John',
@@ -65,6 +65,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
 
   const handleSave = () => {
     setProfileData(tempData);
+    if (onProfileUpdate) {
+      onProfileUpdate({
+        preferredBrands: tempData.preferredBrands,
+        preferredSize: tempData.preferredSize,
+        stylePreferences: tempData.stylePreferences
+      });
+    }
     setIsEditing(false);
   };
 
