@@ -12,6 +12,7 @@ interface HeaderProps {
   isOnlineMode: boolean;
   onModeToggle: () => void;
   selectedOccasion: string;
+  onBackToHome?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -25,6 +26,7 @@ const Header: React.FC<HeaderProps> = ({
   isOnlineMode,
   onModeToggle,
   selectedOccasion
+  onBackToHome,
 }) => {
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -32,7 +34,12 @@ const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-blue-900">ShopSense AI</h1>
+            <button
+              onClick={onBackToHome}
+              className="text-2xl font-bold text-blue-900 hover:text-blue-700 transition-colors duration-200"
+            >
+              ShopSense AI
+            </button>
           </div>
 
           {/* Search Bar */}
