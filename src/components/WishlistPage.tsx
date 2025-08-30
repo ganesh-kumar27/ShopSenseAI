@@ -303,17 +303,12 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
   const [whatsappNumber, setWhatsappNumber] = React.useState(currentSettings.whatsappNumber);
 
   const handleSave = () => {
-    if (!whatsappNumber.trim()) {
-      alert('Please enter your WhatsApp number to receive alerts.');
-      return;
-    }
-    
     if (!priceAlert && !stockAlert) {
       alert('Please select at least one alert type.');
       return;
     }
     
-    onSave({ priceAlert, stockAlert, whatsappNumber: whatsappNumber.trim() });
+    onSave({ priceAlert, stockAlert, whatsappNumber: '' });
   };
 
   return (
@@ -329,24 +324,6 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
           <h4 className="font-medium text-gray-900">{product.name}</h4>
           <p className="text-sm text-gray-600">{product.brand} • ${product.price}</p>
         </div>
-      </div>
-      
-      {/* WhatsApp Number */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          <MessageCircle className="h-4 w-4 inline mr-1" />
-          WhatsApp Number
-        </label>
-        <input
-          type="tel"
-          value={whatsappNumber}
-          onChange={(e) => setWhatsappNumber(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="+1 (555) 123-4567"
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          Include country code (e.g., +1 for US, +91 for India)
-        </p>
       </div>
       
       {/* Alert Types */}
