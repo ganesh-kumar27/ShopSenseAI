@@ -17,6 +17,7 @@ import { Product, CartItem } from './types/Product';
 
 function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isImageSearchOpen, setIsImageSearchOpen] = useState(false);
   const [isOccasionMenuOpen, setIsOccasionMenuOpen] = useState(false);
@@ -82,6 +83,14 @@ function App() {
       };
       setCartItems(items => [...items, cartItem]);
     }
+  };
+
+  const handleToggleWishlist = (productId: string) => {
+    setWishlistItems(items => 
+      items.includes(productId)
+        ? items.filter(id => id !== productId)
+        : [...items, productId]
+    );
   };
 
   const handleUpdateQuantity = (id: string, quantity: number) => {
@@ -393,6 +402,8 @@ function App() {
               <ProductGrid
                 products={displayProducts}
                 onProductClick={setSelectedProduct}
+                wishlistItems={wishlistItems}
+                onToggleWishlist={handleToggleWishlist}
               />
             </div>
           </div>
