@@ -139,28 +139,28 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
       <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden">
           {/* Header */}
-          <div className={`p-6 border-b bg-gradient-to-r ${
+          <div className={`p-4 border-b bg-gradient-to-r ${
             currentView === 'categories' 
               ? 'from-purple-600 to-blue-600' 
               : `${selectedCategory?.color} text-white`
           }`}>
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 {currentView === 'items' && (
                   <button
                     onClick={handleBackToCategories}
-                    className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
+                    className="p-1.5 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
                   >
-                    <ArrowLeft className="h-5 w-5 text-white" />
+                    <ArrowLeft className="h-4 w-4 text-white" />
                   </button>
                 )}
-                <div className="flex items-center space-x-3">
-                  <Calendar className="h-6 w-6 text-white" />
+                <div className="flex items-center space-x-2">
+                  <Calendar className="h-5 w-5 text-white" />
                   <div>
-                    <h2 className="text-xl font-bold text-white">
+                    <h2 className="text-lg font-bold text-white">
                       {currentView === 'categories' ? 'Shop by Occasion' : selectedCategory?.name}
                     </h2>
-                    <p className="text-white text-opacity-90 text-sm">
+                    <p className="text-white text-opacity-90 text-xs">
                       {currentView === 'categories' 
                         ? 'Choose your occasion to get personalized recommendations'
                         : selectedCategory?.description
@@ -171,15 +171,15 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
+                className="p-1.5 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
               >
-                <X className="h-6 w-6 text-white" />
+                <X className="h-5 w-5 text-white" />
               </button>
             </div>
           </div>
 
           {/* Content */}
-          <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+          <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
             {/* Current Selection Banner */}
             {selectedOccasion && (
               <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
