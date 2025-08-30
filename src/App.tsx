@@ -18,7 +18,7 @@ import { Product, CartItem } from './types/Product';
 
 function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [wishlistItems, setWishlistItems] = useState<string[]>(['1', '3', '5', '7']); // Pre-populate with some items
+  const [wishlistItems, setWishlistItems] = useState<string[]>(['1', '3', '5', '7']);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isImageSearchOpen, setIsImageSearchOpen] = useState(false);
   const [isOccasionMenuOpen, setIsOccasionMenuOpen] = useState(false);
@@ -45,7 +45,6 @@ function App() {
     filteredProducts 
   } = useSearch(products, userProfile);
 
-  // Display either search results or image search results
   const displayProducts = showImageResults ? imageSearchResults : filteredProducts;
 
   const availableCategories = useMemo(() => 
@@ -114,12 +113,13 @@ function App() {
   const handleImageSearchResults = (results: Product[]) => {
     setImageSearchResults(results);
     setShowImageResults(true);
-    setSearchQuery(''); // Clear text search when showing image results
+    setSearchQuery('');
+    setCurrentView('search');
   };
 
   const handleTextSearch = (query: string) => {
     setSearchQuery(query);
-    setShowImageResults(false); // Clear image results when doing text search
+    setShowImageResults(false);
     if (query.trim()) {
       setCurrentView('search');
     }
@@ -167,7 +167,7 @@ function App() {
   if (currentView === 'home') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        {/* Simple Header */}
+        {/* Header */}
         <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
@@ -179,7 +179,9 @@ function App() {
                   ShopSense AI
                 </button>
               </div>
+              
               <div className="flex items-center space-x-4">
+                {/* Mode Toggle */}
                 <div className="flex items-center space-x-2">
                   <span className={`text-xs font-medium ${!isOnlineMode ? 'text-gray-900' : 'text-gray-500'}`}>
                     Offline
@@ -200,6 +202,8 @@ function App() {
                     Online
                   </span>
                 </div>
+
+                {/* Action Buttons */}
                 <button
                   onClick={() => setShowProfile(true)}
                   className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
@@ -243,20 +247,20 @@ function App() {
           <div className="max-w-4xl w-full text-center">
             {/* Hero Section */}
             <div className="mb-12">
-              <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
                 Find Your Perfect
                 <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Style Match
                 </span>
-              </h2>
+              </h1>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                 Discover clothing that matches your style with AI-powered search and personalized recommendations
               </p>
             </div>
 
-            {/* Search Options */}
+            {/* Search Options Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {/* Search by Text/Image */}
+              {/* Smart Search Card */}
               <div className="group">
                 <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100">
                   <div className="mb-6">
@@ -306,7 +310,7 @@ function App() {
                 </div>
               </div>
 
-              {/* Shop by Occasion */}
+              {/* Shop by Occasion Card */}
               <div className="group">
                 <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100">
                   <div className="mb-6">
@@ -319,7 +323,6 @@ function App() {
                     </p>
                   </div>
                   
-                  {/* Placeholder content to match search bar height */}
                   <div className="mb-4 h-16 flex items-center justify-center">
                     <button
                       onClick={() => setIsOccasionMenuOpen(true)}
@@ -341,7 +344,7 @@ function App() {
 
             {/* Mode Toggle Info */}
             <div className="mt-12 p-6 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200">
-              <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
+              <div className="flex flex-col md:flex-row items-center justify-center space-y-2 md:space-y-0 md:space-x-4 text-sm text-gray-600">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                   <span><strong>Online Mode:</strong> Search products from multiple e-commerce platforms</span>
@@ -377,6 +380,13 @@ function App() {
           cartItems={cartItems}
           onUpdateQuantity={handleUpdateQuantity}
           onRemoveItem={handleRemoveItem}
+        />
+
+        <ProductModal
+          product={selectedProduct}
+          isOpen={!!selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={handleAddToCart}
         />
       </div>
     );
@@ -462,38 +472,35 @@ function App() {
         )}
       </main>
 
-      {isOnlineMode && (
-        <>
-          <OccasionMenu
-            isOpen={isOccasionMenuOpen}
-            onClose={() => setIsOccasionMenuOpen(false)}
-            onOccasionSelect={handleOccasionSelect}
-            selectedOccasion={selectedOccasion}
-          />
+      {/* Modals for Search View */}
+      <OccasionMenu
+        isOpen={isOccasionMenuOpen}
+        onClose={() => setIsOccasionMenuOpen(false)}
+        onOccasionSelect={handleOccasionSelect}
+        selectedOccasion={selectedOccasion}
+      />
 
-          <ShoppingCart
-            isOpen={isCartOpen}
-            onClose={() => setIsCartOpen(false)}
-            cartItems={cartItems}
-            onUpdateQuantity={handleUpdateQuantity}
-            onRemoveItem={handleRemoveItem}
-          />
+      <ShoppingCart
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+      />
 
-          <ImageSearch
-            isOpen={isImageSearchOpen}
-            onClose={() => setIsImageSearchOpen(false)}
-            products={products}
-            onSearchResults={handleImageSearchResults}
-          />
+      <ImageSearch
+        isOpen={isImageSearchOpen}
+        onClose={() => setIsImageSearchOpen(false)}
+        products={products}
+        onSearchResults={handleImageSearchResults}
+      />
 
-          <ProductModal
-            product={selectedProduct}
-            isOpen={!!selectedProduct}
-            onClose={() => setSelectedProduct(null)}
-            onAddToCart={handleAddToCart}
-          />
-        </>
-      )}
+      <ProductModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
+      />
     </div>
   );
 }
