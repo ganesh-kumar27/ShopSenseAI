@@ -12,6 +12,7 @@ import OccasionMenu from './components/OccasionMenu';
 import { useSearch } from './hooks/useSearch';
 import { products } from './data/products';
 import { stores } from './data/stores';
+import { tailors } from './data/tailors';
 import { Product, CartItem } from './types/Product';
 
 function App() {
@@ -396,7 +397,7 @@ function App() {
             </div>
           </div>
         ) : (
-          <StoresView stores={stores} onProductClick={setSelectedProduct} />
+          <StoresView stores={stores} tailors={tailors} onProductClick={setSelectedProduct} />
         )}
       </main>
 

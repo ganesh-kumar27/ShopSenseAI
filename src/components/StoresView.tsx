@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { Store as StoreIcon, MapPin, Filter } from 'lucide-react';
+import { Store as StoreIcon, MapPin, Filter, Scissors } from 'lucide-react';
 import { Store } from '../types/Store';
 import { Product } from '../types/Product';
+import { Tailor } from '../types/Tailor';
 import StoreCard from './StoreCard';
 import StoreModal from './StoreModal';
 import StoreCatalogue from './StoreCatalogue';
+import TailoringView from './TailoringView';
 
 interface StoresViewProps {
   stores: Store[];
+  tailors: Tailor[];
   onProductClick: (product: Product) => void;
 }
 
-const StoresView: React.FC<StoresViewProps> = ({ stores, onProductClick }) => {
+const StoresView: React.FC<StoresViewProps> = ({ stores, tailors, onProductClick }) => {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [catalogueStore, setCatalogueStore] = useState<Store | null>(null);
+  const [showTailoring, setShowTailoring] = useState(false);
   const [sortBy, setSortBy] = useState<'distance' | 'rating' | 'name'>('distance');
   const [filterBy, setFilterBy] = useState<string>('');
 
@@ -48,6 +52,16 @@ const StoresView: React.FC<StoresViewProps> = ({ stores, onProductClick }) => {
     );
   }
 
+  // Show tailoring view if selected
+  if (showTailoring) {
+    return (
+      <TailoringView
+        tailors={tailors}
+        onBack={() => setShowTailoring(false)}
+      />
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -59,6 +73,47 @@ const StoresView: React.FC<StoresViewProps> = ({ stores, onProductClick }) => {
         <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Discover local clothing stores near you. Browse ratings, reviews, and get directions to find the perfect place to shop.
         </p>
+      </div>
+
+      {/* Custom Tailoring Option */}
+      <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl shadow-lg overflow-hidden">
+        <div className="p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+                <Scissors className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-1">Custom Tailoring Services</h3>
+                <p className="text-purple-100 text-sm">
+                  Get perfectly fitted clothing from verified professional tailors
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowTailoring(true)}
+              className="bg-white text-purple-600 hover:bg-purple-50 py-2 px-6 rounded-lg transition-colors duration-200 font-semibold flex items-center space-x-2"
+            >
+              <Scissors className="h-4 w-4" />
+              <span>View Tailors</span>
+            </button>
+          </div>
+          
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+              <span className="text-purple-100">{tailors.length} Verified Tailors</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+              <span className="text-purple-100">Custom Fittings Available</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+              <span className="text-purple-100">Professional Reviews</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Controls */}
