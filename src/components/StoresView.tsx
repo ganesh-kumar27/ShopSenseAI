@@ -84,41 +84,6 @@ const StoresView: React.FC<StoresViewProps> = ({ stores, tailors, onProductClick
           <button
             onClick={() => setActiveTab('stores')}
             className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 flex items-center justify-center space-x-2 ${
-              activeTab === 'stores'
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-            }`}
-          >
-            <Building2 className="h-5 w-5" />
-            <span>Retail Stores</span>
-            <span className={`text-xs px-2 py-1 rounded-full ${
-              activeTab === 'stores' 
-                ? 'bg-white bg-opacity-20 text-white' 
-                : 'bg-gray-100 text-gray-600'
-            }`}>
-              {stores.length}
-            </span>
-          </button>
-          <button
-            onClick={() => setActiveTab('tailoring')}
-            className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 flex items-center justify-center space-x-2 ${
-              activeTab === 'tailoring'
-                ? 'bg-purple-600 text-white shadow-lg'
-                : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
-            }`}
-          >
-            <Scissors className="h-5 w-5" />
-            <span>Custom Tailoring</span>
-            <span className={`text-xs px-2 py-1 rounded-full ${
-              activeTab === 'tailoring' 
-                ? 'bg-white bg-opacity-20 text-white' 
-                : 'bg-gray-100 text-gray-600'
-            }`}>
-              {tailors.length}
-            </span>
-          </button>
-        </div>
-      </div>
 
       {/* Tab Content */}
       {activeTab === 'stores' ? (
