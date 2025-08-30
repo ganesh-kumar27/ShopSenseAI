@@ -15,6 +15,96 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
   const [showPromotionPopup, setShowPromotionPopup] = React.useState(false);
   const [showCallScheduling, setShowCallScheduling] = React.useState(false);
   const [showVideoCallPopup, setShowVideoCallPopup] = React.useState(false);
+  const [showSlotBooking, setShowSlotBooking] = React.useState(false);
+  const [customerName, setCustomerName] = React.useState('');
+  const [customerPhone, setCustomerPhone] = React.useState('');
+  const [selectedDate, setSelectedDate] = React.useState('');
+  const [selectedTime, setSelectedTime] = React.useState('');
+  const [isBooking, setIsBooking] = React.useState(false);
+  const [isConfirmed, setIsConfirmed] = React.useState(false);
+
+  // Generate next 7 business days for date selection
+  const availableDates = React.useMemo(() => {
+    const dates = [];
+    const today = new Date();
+    
+    for (let i = 0; i < 10; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      
+      const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+      const videoCallHours = store.videoCallHours || store.hours[dayName];
+      
+      if (videoCallHours && videoCallHours !== 'Closed') {
+        dates.push({
+          date: date.toISOString().split('T')[0],
+          displayDate: date.toLocaleDateString('en-US', { 
+            weekday: 'short', 
+            month: 'short', 
+            day: 'numeric' 
+          }),
+          dayName,
+          hours: videoCallHours,
+          isToday: i === 0
+        });
+      }
+    }
+    
+    return dates;
+  }, [store]);
+
+  // Generate 15-minute time slots based on video call hours
+  const availableTimeSlots = React.useMemo(() => {
+    if (!selectedDate) return [];
+    
+    const selectedDateInfo = availableDates.find(d => d.date === selectedDate);
+    if (!selectedDateInfo || selectedDateInfo.hours === 'Closed') return [];
+    
+    // Parse hours (simplified - assumes format like "9:00 AM - 8:00 PM")
+    const [openTime, closeTime] = selectedDateInfo.hours.split(' - ');
+    
+    const parseTime = (timeStr: string) => {
+      const [time, period] = timeStr.split(' ');
+      const [hours, minutes] = time.split(':').map(Number);
+      let hour24 = hours;
+      
+      if (period === 'PM' && hours !== 12) hour24 += 12;
+      if (period === 'AM' && hours === 12) hour24 = 0;
+      
+      return hour24 * 60 + minutes;
+    };
+    
+    const openMinutes = parseTime(openTime);
+    const closeMinutes = parseTime(closeTime);
+    
+    const slots = [];
+    
+    // Generate 15-minute slots
+    for (let minutes = openMinutes; minutes < closeMinutes; minutes += 15) {
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      
+      let displayHour = hours;
+      const period = hours >= 12 ? 'PM' : 'AM';
+      
+      if (hours === 0) displayHour = 12;
+      else if (hours > 12) displayHour = hours - 12;
+      
+      const timeString = `${displayHour}:${mins.toString().padStart(2, '0')} ${period}`;
+      
+      // Simulate some booked slots (30% chance)
+      const isBooked = Math.random() < 0.3;
+      
+      slots.push({
+        time: timeString,
+        minutes,
+        isBooked,
+        isAvailable: !isBooked
+      });
+    }
+    
+    return slots;
+  }, [selectedDate, availableDates]);
 
   const getPriceRangeText = (range: string) => {
     switch (range) {
@@ -45,6 +135,41 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
   const handleVideoCall = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowVideoCallPopup(true);
+  };
+
+  const handleBookingSubmit = () => {
+    if (!customerName.trim() || !customerPhone.trim() || !selectedDate || !selectedTime) {
+      alert('Please fill in all required fields and select a time slot.');
+      return;
+    }
+    
+    setIsBooking(true);
+    
+    // Simulate booking process
+    setTimeout(() => {
+      setIsConfirmed(true);
+      setIsBooking(false);
+      
+      // Show confirmation and close after delay
+      setTimeout(() => {
+        alert(`Video consultation booked successfully! 📹\n\nStore: ${store.name}\nDate: ${availableDates.find(d => d.date === selectedDate)?.displayDate}\nTime: ${selectedTime}\nDuration: 15 minutes\n\nYou will receive a video call link via SMS 5 minutes before your appointment.`);
+        setShowVideoCallPopup(false);
+        setShowSlotBooking(false);
+        setIsConfirmed(false);
+        setCustomerName('');
+        setCustomerPhone('');
+        setSelectedDate('');
+        setSelectedTime('');
+      }, 2000);
+    }, 2000);
+  };
+
+  const handleBackToVideoInfo = () => {
+    setShowSlotBooking(false);
+    setCustomerName('');
+    setCustomerPhone('');
+    setSelectedDate('');
+    setSelectedTime('');
   };
 
   const status = getCurrentStatus();
@@ -296,42 +421,157 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
                     </div>
                   </div>
                   
-                  <div className="bg-green-50 rounded-lg p-4 mb-4 border border-green-200">
-                    <h5 className="font-medium text-green-900 mb-2">📹 15-Minute Video Consultation Available</h5>
-                    <p className="text-sm text-green-800 leading-relaxed mb-3">
-                      Connect with our style experts for personalized assistance during: {store.videoCallHours || 'Business hours'}
-                    </p>
-                    <ul className="text-sm text-green-800 space-y-1">
-                      <li>• Get personalized style advice from store experts</li>
-                      <li>• See products up close with live video demonstration</li>
-                      <li>• Ask questions about fit, sizing, and availability</li>
-                      <li>• Receive styling tips and outfit recommendations</li>
-                    </ul>
-                  </div>
+                  {!showSlotBooking ? (
+                    <>
+                      <div className="bg-green-50 rounded-lg p-4 mb-4 border border-green-200">
+                        <h5 className="font-medium text-green-900 mb-2">📹 15-Minute Video Consultation Available</h5>
+                        <p className="text-sm text-green-800 leading-relaxed mb-3">
+                          Connect with our style experts for personalized assistance during: {store.videoCallHours || 'Business hours'}
+                        </p>
+                        <ul className="text-sm text-green-800 space-y-1">
+                          <li>• Get personalized style advice from store experts</li>
+                          <li>• See products up close with live video demonstration</li>
+                          <li>• Ask questions about fit, sizing, and availability</li>
+                          <li>• Receive styling tips and outfit recommendations</li>
+                        </ul>
+                      </div>
 
-                  <div className="space-y-3">
-                    <button
-                      onClick={() => {
-                        setShowVideoCallPopup(false);
-                        // Simulate booking process
-                        setTimeout(() => {
-                          alert(`Video consultation booking initiated! 📹\n\nStore: ${store.name}\nService: 15-minute video consultation\n\nIn a real app, this would open a booking system to schedule your video call with available time slots.`);
-                        }, 100);
-                      }}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
-                    >
-                      <Video className="h-5 w-5" />
-                      <span>Book 15-min Video Call</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => window.open(`tel:${store.phone}`, '_self')}
-                      className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
-                    >
-                      <Phone className="h-5 w-5" />
-                      <span>Call Store Directly</span>
-                    </button>
-                  </div>
+                      <div className="space-y-3">
+                        <button
+                          onClick={() => setShowSlotBooking(true)}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
+                        >
+                          <Video className="h-5 w-5" />
+                          <span>Book 15-min Video Call</span>
+                        </button>
+                        
+                        <button
+                          onClick={() => window.open(`tel:${store.phone}`, '_self')}
+                          className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
+                        >
+                          <Phone className="h-5 w-5" />
+                          <span>Call Store Directly</span>
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {!isConfirmed ? (
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h5 className="font-medium text-gray-900">Book Your Slot</h5>
+                            <button
+                              onClick={handleBackToVideoInfo}
+                              className="text-gray-500 hover:text-gray-700"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+
+                          {/* Customer Information */}
+                          <div className="grid grid-cols-1 gap-3">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">Name *</label>
+                              <input
+                                type="text"
+                                value={customerName}
+                                onChange={(e) => setCustomerName(e.target.value)}
+                                className="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-green-500 focus:border-transparent"
+                                placeholder="Your name"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">Phone *</label>
+                              <input
+                                type="tel"
+                                value={customerPhone}
+                                onChange={(e) => setCustomerPhone(e.target.value)}
+                                className="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-green-500 focus:border-transparent"
+                                placeholder="Your phone number"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Date Selection */}
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-2">Select Date *</label>
+                            <div className="grid grid-cols-2 gap-2">
+                              {availableDates.slice(0, 4).map((dateInfo) => (
+                                <button
+                                  key={dateInfo.date}
+                                  onClick={() => {
+                                    setSelectedDate(dateInfo.date);
+                                    setSelectedTime('');
+                                  }}
+                                  className={`p-2 rounded text-xs font-medium transition-all duration-200 ${
+                                    selectedDate === dateInfo.date
+                                      ? 'border-green-500 bg-green-50 text-green-700 border-2'
+                                      : 'border border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                  }`}
+                                >
+                                  <div className="font-medium">
+                                    {dateInfo.isToday ? 'Today' : dateInfo.displayDate}
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Time Selection */}
+                          {selectedDate && (
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-2">Select Time *</label>
+                              <div className="grid grid-cols-3 gap-1 max-h-32 overflow-y-auto">
+                                {availableTimeSlots.slice(0, 12).map((slot) => (
+                                  <button
+                                    key={slot.time}
+                                    onClick={() => setSelectedTime(slot.time)}
+                                    disabled={slot.isBooked}
+                                    className={`p-1 rounded text-xs font-medium transition-all duration-200 ${
+                                      slot.isBooked
+                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                        : selectedTime === slot.time
+                                          ? 'bg-green-500 text-white'
+                                          : 'border border-gray-200 hover:border-green-300 hover:bg-green-50 text-gray-700'
+                                    }`}
+                                  >
+                                    {slot.time}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Book Button */}
+                          <button
+                            onClick={handleBookingSubmit}
+                            disabled={!customerName.trim() || !customerPhone.trim() || !selectedDate || !selectedTime || isBooking}
+                            className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 px-4 rounded-lg transition-colors duration-200 font-semibold text-sm flex items-center justify-center space-x-2"
+                          >
+                            {isBooking ? (
+                              <>
+                                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
+                                <span>Booking...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Video className="h-4 w-4" />
+                                <span>Confirm Booking</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="text-center py-4">
+                          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <Video className="h-6 w-6 text-green-600" />
+                          </div>
+                          <h5 className="font-medium text-gray-900 mb-1">Booking Confirmed!</h5>
+                          <p className="text-sm text-gray-600">Your video consultation is scheduled</p>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
