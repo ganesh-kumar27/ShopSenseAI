@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Heart, ShoppingBag, Trash2, Bell, MessageCircle, Settings } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingBag, Trash2, Bell, MessageCircle, Settings, X } from 'lucide-react';
 import { Product } from '../types/Product';
 import ProductCard from './ProductCard';
 
@@ -261,6 +261,27 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
                 </div>
               </>
             )}
+
+            {/* Wishlist Actions */}
+            <div className="mt-8 bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-6 border border-rose-200">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <ShoppingBag className="h-6 w-6 text-rose-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-rose-900 mb-2">💝 Ready to Shop?</h4>
+                  <p className="text-sm text-rose-800 leading-relaxed mb-4">
+                    Your wishlist items are waiting! Click on any product to view details and add to cart, or continue browsing to discover more items you'll love.
+                  </p>
+                  <button
+                    onClick={onBack}
+                    className="bg-rose-600 hover:bg-rose-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium text-sm"
+                  >
+                    Continue Shopping
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -389,32 +410,6 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
           <Bell className="h-4 w-4" />
           <span>Set Alert</span>
         </button>
-      </div>
-              ))}
-            </div>
-
-            {/* Wishlist Actions */}
-            <div className="mt-8 bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-6 border border-rose-200">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <ShoppingBag className="h-6 w-6 text-rose-600" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-rose-900 mb-2">💝 Ready to Shop?</h4>
-                  <p className="text-sm text-rose-800 leading-relaxed mb-4">
-                    Your wishlist items are waiting! Click on any product to view details and add to cart, or continue browsing to discover more items you'll love.
-                  </p>
-                  <button
-                    onClick={onBack}
-                    className="bg-rose-600 hover:bg-rose-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium text-sm"
-                  >
-                    Continue Shopping
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
