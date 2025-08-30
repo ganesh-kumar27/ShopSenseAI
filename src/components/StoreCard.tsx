@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Star, MapPin, Phone, Clock, ExternalLink, Navigation, X, Video } from 'lucide-react';
 import { Store } from '../types/Store';
 import CallSchedulingModal from './CallSchedulingModal';
+import CallSchedulingModal from './CallSchedulingModal';
 
 interface StoreCardProps {
   store: Store;
@@ -12,6 +13,7 @@ interface StoreCardProps {
 const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
   const [showReviewPopup, setShowReviewPopup] = React.useState(false);
   const [showPromotionPopup, setShowPromotionPopup] = React.useState(false);
+  const [showCallScheduling, setShowCallScheduling] = React.useState(false);
   const [showCallScheduling, setShowCallScheduling] = React.useState(false);
 
   const getPriceRangeText = (range: string) => {
@@ -197,6 +199,13 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
           )}
         </div>
       </div>
+
+      {/* Call Scheduling Modal */}
+      <CallSchedulingModal
+        store={store}
+        isOpen={showCallScheduling}
+        onClose={() => setShowCallScheduling(false)}
+      />
 
       {/* Call Scheduling Modal */}
       <CallSchedulingModal
