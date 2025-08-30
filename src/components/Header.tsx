@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, ShoppingBag, Camera, User, Calendar } from 'lucide-react';
+import { Search, ShoppingBag, Camera, User, Calendar, ArrowLeft } from 'lucide-react';
 
 interface HeaderProps {
   cartItemsCount: number;

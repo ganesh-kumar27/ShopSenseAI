@@ -23,6 +23,7 @@ function App() {
   const [showImageResults, setShowImageResults] = useState(false);
   const [isOnlineMode, setIsOnlineMode] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
+  const [currentView, setCurrentView] = useState<'home' | 'search' | 'stores'>('home');
   const [userProfile, setUserProfile] = useState({
     preferredBrands: ['Louis Philippe', 'Van Heusen'],
     preferredSize: 'L',
@@ -106,6 +107,22 @@ function App() {
   const handleTextSearch = (query: string) => {
     setSearchQuery(query);
     setShowImageResults(false); // Clear image results when doing text search
+    if (query.trim()) {
+      setCurrentView('search');
+    }
+  };
+
+  const handleOccasionSelect = (occasion: string) => {
+    setSelectedOccasion(occasion);
+    setCurrentView('search');
+  };
+
+  const handleBackToHome = () => {
+    setCurrentView('home');
+    setSearchQuery('');
+    setSelectedOccasion('');
+    setShowImageResults(false);
+    setImageSearchResults([]);
   };
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -120,6 +137,199 @@ function App() {
     );
   }
 
+  // Homepage View
+  if (currentView === 'home') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        {/* Simple Header */}
+        <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex-shrink-0">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  ShopSense AI
+                </h1>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
+                  <span className={`text-sm font-medium ${!isOnlineMode ? 'text-gray-900' : 'text-gray-500'}`}>
+                    Offline
+                  </span>
+                  <button
+                    onClick={() => setIsOnlineMode(!isOnlineMode)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      isOnlineMode ? 'bg-blue-600' : 'bg-gray-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                        isOnlineMode ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                  <span className={`text-sm font-medium ${isOnlineMode ? 'text-gray-900' : 'text-gray-500'}`}>
+                    Online
+                  </span>
+                </div>
+                <button
+                  onClick={() => setShowProfile(true)}
+                  className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                  title="Profile"
+                >
+                  <User className="h-6 w-6" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 flex items-center justify-center px-4 py-16">
+          <div className="max-w-4xl w-full text-center">
+            {/* Hero Section */}
+            <div className="mb-12">
+              <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Find Your Perfect
+                <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Style Match
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Discover clothing that matches your style with AI-powered search and personalized recommendations
+              </p>
+            </div>
+
+            {/* Search Options */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {/* Search by Text/Image */}
+              <div className="group">
+                <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100">
+                  <div className="mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <Search className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Smart Search</h3>
+                    <p className="text-gray-600 mb-6">
+                      Search by text or upload an image to find similar clothing items
+                    </p>
+                  </div>
+                  
+                  {/* Search Bar */}
+                  <div className="relative mb-4">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Search className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
+                      <button
+                        onClick={() => setIsImageSearchOpen(true)}
+                        className="p-2 text-gray-400 hover:text-blue-600 transition-colors duration-200 rounded-lg hover:bg-blue-50"
+                        title="Search by image"
+                      >
+                        <Camera className="h-5 w-5" />
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => handleTextSearch(e.target.value)}
+                      className="block w-full pl-12 pr-16 py-4 border border-gray-300 rounded-xl text-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Search for clothes, brands, or styles..."
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                    <div className="flex items-center space-x-1">
+                      <Search className="h-4 w-4" />
+                      <span>Text Search</span>
+                    </div>
+                    <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                    <div className="flex items-center space-x-1">
+                      <Camera className="h-4 w-4" />
+                      <span>Image Search</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Shop by Occasion */}
+              <div className="group">
+                <button
+                  onClick={() => setIsOccasionMenuOpen(true)}
+                  className="w-full bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 text-left"
+                >
+                  <div className="mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <Calendar className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Shop by Occasion</h3>
+                    <p className="text-gray-600 mb-6 text-center">
+                      Find perfect outfits for specific events and occasions
+                    </p>
+                  </div>
+                  
+                  {/* Occasion Preview */}
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <div className="text-lg mb-1">💼</div>
+                      <div className="text-xs text-gray-600">Professional</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <div className="text-lg mb-1">🎩</div>
+                      <div className="text-xs text-gray-600">Formal</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <div className="text-lg mb-1">👕</div>
+                      <div className="text-xs text-gray-600">Casual</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <div className="text-lg mb-1">🏃</div>
+                      <div className="text-xs text-gray-600">Active</div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <span className="text-purple-600 font-medium">Browse All Occasions →</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Mode Toggle Info */}
+            <div className="mt-12 p-6 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200">
+              <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span><strong>Online Mode:</strong> Search products from multiple e-commerce platforms</span>
+                </div>
+                <div className="hidden md:block w-1 h-1 bg-gray-300 rounded-full"></div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+                  <span><strong>Offline Mode:</strong> Browse nearby retail stores</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        {/* Modals */}
+        <OccasionMenu
+          isOpen={isOccasionMenuOpen}
+          onClose={() => setIsOccasionMenuOpen(false)}
+          onOccasionSelect={handleOccasionSelect}
+          selectedOccasion={selectedOccasion}
+        />
+
+        <ImageSearch
+          isOpen={isImageSearchOpen}
+          onClose={() => setIsImageSearchOpen(false)}
+          products={products}
+          onSearchResults={handleImageSearchResults}
+        />
+      </div>
+    );
+  }
+
+  // Search Results View
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
@@ -133,6 +343,8 @@ function App() {
         isOnlineMode={isOnlineMode}
         onModeToggle={() => setIsOnlineMode(!isOnlineMode)}
         selectedOccasion={selectedOccasion}
+        onBackToHome={handleBackToHome}
+        showBackButton={true}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -199,7 +411,7 @@ function App() {
           <OccasionMenu
             isOpen={isOccasionMenuOpen}
             onClose={() => setIsOccasionMenuOpen(false)}
-            onOccasionSelect={setSelectedOccasion}
+            onOccasionSelect={handleOccasionSelect}
             selectedOccasion={selectedOccasion}
           />
 
