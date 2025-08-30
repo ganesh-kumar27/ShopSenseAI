@@ -7,9 +7,10 @@ import TailorModal from './TailorModal';
 interface TailoringViewProps {
   tailors: Tailor[];
   onBack: () => void;
+  hideBackButton?: boolean;
 }
 
-const TailoringView: React.FC<TailoringViewProps> = ({ tailors, onBack }) => {
+const TailoringView: React.FC<TailoringViewProps> = ({ tailors, onBack, hideBackButton = false }) => {
   const [selectedTailor, setSelectedTailor] = useState<Tailor | null>(null);
   const [sortBy, setSortBy] = useState<'distance' | 'rating' | 'name' | 'price'>('rating');
   const [filterBy, setFilterBy] = useState<string>('');
@@ -40,25 +41,27 @@ const TailoringView: React.FC<TailoringViewProps> = ({ tailors, onBack }) => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center py-6">
-        <div className="flex items-center justify-center mb-4">
-          <button
-            onClick={onBack}
-            className="absolute left-4 p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <Scissors className="h-8 w-8 text-purple-600 mr-3" />
-          <h1 className="text-3xl font-bold text-gray-900">Custom Tailoring Services</h1>
+      {!hideBackButton && (
+        <div className="text-center py-6">
+          <div className="flex items-center justify-center mb-4">
+            <button
+              onClick={onBack}
+              className="absolute left-4 p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <Scissors className="h-8 w-8 text-purple-600 mr-3" />
+            <h1 className="text-3xl font-bold text-gray-900">Custom Tailoring Services</h1>
+          </div>
+          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Find verified professional tailors near you. Get custom clothing, alterations, and expert craftsmanship with transparent pricing and reviews.
+          </p>
         </div>
-        <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Find verified professional tailors near you. Get custom clothing, alterations, and expert craftsmanship with transparent pricing and reviews.
-        </p>
-      </div>
+      )}
 
       {/* Controls */}
       <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-        <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div className="flex items-center justify-center mb-4">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <MapPin className="h-5 w-5 text-gray-400" />

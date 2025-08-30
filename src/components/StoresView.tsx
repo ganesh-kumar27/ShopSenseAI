@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Store as StoreIcon, MapPin, Filter, Scissors } from 'lucide-react';
+import { Store as StoreIcon, MapPin, Filter, Scissors, Building2 } from 'lucide-react';
 import { Store } from '../types/Store';
 import { Product } from '../types/Product';
 import { Tailor } from '../types/Tailor';
@@ -17,7 +17,7 @@ interface StoresViewProps {
 const StoresView: React.FC<StoresViewProps> = ({ stores, tailors, onProductClick }) => {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [catalogueStore, setCatalogueStore] = useState<Store | null>(null);
-  const [showTailoring, setShowTailoring] = useState(false);
+  const [activeTab, setActiveTab] = useState<'stores' | 'tailoring'>('stores');
   const [sortBy, setSortBy] = useState<'distance' | 'rating' | 'name'>('distance');
   const [filterBy, setFilterBy] = useState<string>('');
 
@@ -52,131 +52,146 @@ const StoresView: React.FC<StoresViewProps> = ({ stores, tailors, onProductClick
     );
   }
 
-  // Show tailoring view if selected
-  if (showTailoring) {
-    return (
-      <TailoringView
-        tailors={tailors}
-        onBack={() => setShowTailoring(false)}
-      />
-    );
-  }
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center py-6">
         <div className="flex items-center justify-center mb-4">
-          <StoreIcon className="h-8 w-8 text-blue-600 mr-3" />
-          <h1 className="text-3xl font-bold text-gray-900">Nearby Retail Stores</h1>
+          {activeTab === 'stores' ? (
+            <>
+              <Building2 className="h-8 w-8 text-blue-600 mr-3" />
+              <h1 className="text-3xl font-bold text-gray-900">Nearby Retail Stores</h1>
+            </>
+          ) : (
+            <>
+              <Scissors className="h-8 w-8 text-purple-600 mr-3" />
+              <h1 className="text-3xl font-bold text-gray-900">Custom Tailoring Services</h1>
+            </>
+          )}
         </div>
         <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Discover local clothing stores near you. Browse ratings, reviews, and get directions to find the perfect place to shop.
+          {activeTab === 'stores' 
+            ? 'Discover local clothing stores near you. Browse ratings, reviews, and get directions to find the perfect place to shop.'
+            : 'Find verified professional tailors near you. Get custom clothing, alterations, and expert craftsmanship with transparent pricing and reviews.'
+          }
         </p>
       </div>
 
-      {/* Custom Tailoring Option */}
-      <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl shadow-lg overflow-hidden">
-        <div className="p-6 text-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
-                <Scissors className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-1">Custom Tailoring Services</h3>
-                <p className="text-purple-100 text-sm">
-                  Get perfectly fitted clothing from verified professional tailors
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowTailoring(true)}
-              className="bg-white text-purple-600 hover:bg-purple-50 py-2 px-6 rounded-lg transition-colors duration-200 font-semibold flex items-center space-x-2"
-            >
-              <Scissors className="h-4 w-4" />
-              <span>View Tailors</span>
-            </button>
-          </div>
-          
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span className="text-purple-100">{tailors.length} Verified Tailors</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span className="text-purple-100">Custom Fittings Available</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span className="text-purple-100">Professional Reviews</span>
-            </div>
-          </div>
+      {/* Tab Navigation */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex">
+          <button
+            onClick={() => setActiveTab('stores')}
+            className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 flex items-center justify-center space-x-2 ${
+              activeTab === 'stores'
+                ? 'bg-blue-600 text-white shadow-lg'
+                : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+            }`}
+          >
+            <Building2 className="h-5 w-5" />
+            <span>Retail Stores</span>
+            <span className={`text-xs px-2 py-1 rounded-full ${
+              activeTab === 'stores' 
+                ? 'bg-white bg-opacity-20 text-white' 
+                : 'bg-gray-100 text-gray-600'
+            }`}>
+              {stores.length}
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab('tailoring')}
+            className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 flex items-center justify-center space-x-2 ${
+              activeTab === 'tailoring'
+                ? 'bg-purple-600 text-white shadow-lg'
+                : 'text-gray-600 hover:text-purple-600 hover:bg-purple-50'
+            }`}
+          >
+            <Scissors className="h-5 w-5" />
+            <span>Custom Tailoring</span>
+            <span className={`text-xs px-2 py-1 rounded-full ${
+              activeTab === 'tailoring' 
+                ? 'bg-white bg-opacity-20 text-white' 
+                : 'bg-gray-100 text-gray-600'
+            }`}>
+              {tailors.length}
+            </span>
+          </button>
         </div>
       </div>
 
-      {/* Controls */}
-      <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-        <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-5 w-5 text-gray-400" />
-              <span className="text-sm text-gray-600">
-                Showing {filteredAndSortedStores.length} stores near you
-              </span>
+      {/* Tab Content */}
+      {activeTab === 'stores' ? (
+        <>
+          {/* Controls */}
+          <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+            <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-5 w-5 text-gray-400" />
+                  <span className="text-sm text-gray-600">
+                    Showing {filteredAndSortedStores.length} stores near you
+                  </span>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                {/* Filter */}
+                <div className="flex items-center space-x-2">
+                  <Filter className="h-4 w-4 text-gray-400" />
+                  <select
+                    value={filterBy}
+                    onChange={(e) => setFilterBy(e.target.value)}
+                    className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">All Categories</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="casual">Casual</option>
+                    <option value="formal">Formal</option>
+                    <option value="sportswear">Sportswear</option>
+                    <option value="vintage">Vintage</option>
+                    <option value="designer">Designer</option>
+                  </select>
+                </div>
+                
+                {/* Sort */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as 'distance' | 'rating' | 'name')}
+                  className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="distance">Sort by Distance</option>
+                  <option value="rating">Sort by Rating</option>
+                  <option value="name">Sort by Name</option>
+                </select>
+              </div>
             </div>
           </div>
-          
-          <div className="flex items-center space-x-3">
-            {/* Filter */}
-            <div className="flex items-center space-x-2">
-              <Filter className="h-4 w-4 text-gray-400" />
-              <select
-                value={filterBy}
-                onChange={(e) => setFilterBy(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">All Categories</option>
-                <option value="clothing">Clothing</option>
-                <option value="casual">Casual</option>
-                <option value="formal">Formal</option>
-                <option value="sportswear">Sportswear</option>
-                <option value="vintage">Vintage</option>
-                <option value="designer">Designer</option>
-              </select>
-            </div>
-            
-            {/* Sort */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as 'distance' | 'rating' | 'name')}
-              className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="distance">Sort by Distance</option>
-              <option value="rating">Sort by Rating</option>
-              <option value="name">Sort by Name</option>
-            </select>
-          </div>
-        </div>
-      </div>
 
-      {/* Stores Grid */}
-      {filteredAndSortedStores.length === 0 ? (
-        <div className="text-center py-8">
-          <StoreIcon className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500 text-lg">No stores found matching your criteria.</p>
-        </div>
+          {/* Stores Grid */}
+          {filteredAndSortedStores.length === 0 ? (
+            <div className="text-center py-8">
+              <Building2 className="h-12 w-12 mx-auto text-gray-300 mb-4" />
+              <p className="text-gray-500 text-lg">No stores found matching your criteria.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredAndSortedStores.map((store) => (
+                <StoreCard
+                  key={store.id}
+                  store={store}
+                  onStoreClick={setCatalogueStore}
+                />
+              ))}
+            </div>
+          )}
+        </>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAndSortedStores.map((store) => (
-            <StoreCard
-              key={store.id}
-              store={store}
-              onStoreClick={setCatalogueStore}
-            />
-          ))}
-        </div>
+        <TailoringView
+          tailors={tailors}
+          onBack={() => {}} // No back needed since we're using tabs
+          hideBackButton={true}
+        />
       )}
 
       {/* Store Modal */}
