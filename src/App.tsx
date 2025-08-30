@@ -294,7 +294,7 @@ function App() {
 
               {/* Shop by Occasion */}
               <div className="group">
-                <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 pb-12 border border-gray-100">
+                <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 h-full flex flex-col">
                   <div className="mb-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                       <Calendar className="h-8 w-8 text-white" />
@@ -305,7 +305,9 @@ function App() {
                     </p>
                   </div>
                   
-                  {/* Placeholder content to match search bar height */}
+                  <div className="flex-1 flex flex-col justify-center">
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div className="mb-4 flex items-center justify-center">
                   <div className="mb-6 h-16 flex items-center justify-center">
                     <button
                       onClick={() => setIsOccasionMenuOpen(true)}
@@ -320,6 +322,8 @@ function App() {
                       <Calendar className="h-4 w-4" />
                       <span>Event-Based Shopping</span>
                     </div>
+                  </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -430,7 +434,7 @@ function App() {
 
               <ProductGrid
                 products={displayProducts}
-                onProductClick={setSelectedProduct}
+                <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 h-full flex flex-col">
                 wishlistItems={wishlistItems}
                 onToggleWishlist={handleToggleWishlist}
               />
