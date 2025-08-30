@@ -283,7 +283,7 @@ function App() {
                       <Search className="h-4 w-4" />
                       <span>Text Search</span>
                     </div>
-                    <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                    <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full"></div>
                     <div className="flex items-center space-x-1">
                       <Camera className="h-4 w-4" />
                       <span>Image Search</span>
