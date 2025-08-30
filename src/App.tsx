@@ -259,7 +259,7 @@ function App() {
               <div className="group">
                 <button
                   onClick={() => setIsOccasionMenuOpen(true)}
-                  className="w-full bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 text-left"
+                  className="w-full bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100"
                 >
                   <div className="mb-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -269,26 +269,6 @@ function App() {
                     <p className="text-gray-600 mb-6 text-center">
                       Find perfect outfits for specific events and occasions
                     </p>
-                  </div>
-                  
-                  {/* Occasion Preview */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div className="bg-gray-50 rounded-lg p-3 text-center">
-                      <div className="text-lg mb-1">💼</div>
-                      <div className="text-xs text-gray-600">Professional</div>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3 text-center">
-                      <div className="text-lg mb-1">🎩</div>
-                      <div className="text-xs text-gray-600">Formal</div>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3 text-center">
-                      <div className="text-lg mb-1">👕</div>
-                      <div className="text-xs text-gray-600">Casual</div>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3 text-center">
-                      <div className="text-lg mb-1">🏃</div>
-                      <div className="text-xs text-gray-600">Active</div>
-                    </div>
                   </div>
                   
                   <div className="text-center">
