@@ -96,7 +96,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
       { key: 'weight', label: 'Weight', unit: 'lbs', description: 'Your weight in pounds' }
     ];
 
-    if (profileData.gender === 'Female') {
+    const currentGender = isEditing ? tempData.gender : profileData.gender;
+    if (currentGender === 'Female') {
       return [...commonFields, ...femaleSpecific, ...physicalMeasurements];
     }
     return [...commonFields, ...physicalMeasurements];
@@ -371,7 +372,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
             </div>
 
             {/* Body Measurements Section */}
-            {(profileData.gender || isEditing) && (
+            {((isEditing ? tempData.gender : profileData.gender) || isEditing) && (
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Body Measurements</h3>
