@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, ChevronDown, X, Sparkles } from 'lucide-react';
+import { Calendar, ChevronRight, ArrowLeft, X, Sparkles } from 'lucide-react';
 
 interface OccasionMenuProps {
   isOpen: boolean;
@@ -8,55 +8,89 @@ interface OccasionMenuProps {
   selectedOccasion: string;
 }
 
-const occasions = [
+const occasionCategories = [
   {
-    category: 'Professional',
+    id: 'professional',
+    name: 'Professional',
+    description: 'Work and business attire',
+    icon: '💼',
+    color: 'from-blue-500 to-blue-600',
     items: [
-      { id: 'office', name: 'Office Wear', description: 'Professional attire for daily work' },
-      { id: 'business', name: 'Business Meetings', description: 'Formal business presentations' },
-      { id: 'interviews', name: 'Job Interviews', description: 'Make a great first impression' },
-      { id: 'business casual', name: 'Business Casual', description: 'Relaxed professional look' },
-      { id: 'meetings', name: 'Client Meetings', description: 'Professional client interactions' }
+      { id: 'office', name: 'Office Wear', description: 'Professional attire for daily work', icon: '👔' },
+      { id: 'business', name: 'Business Meetings', description: 'Formal business presentations', icon: '🤝' },
+      { id: 'interviews', name: 'Job Interviews', description: 'Make a great first impression', icon: '📋' },
+      { id: 'business casual', name: 'Business Casual', description: 'Relaxed professional look', icon: '👕' },
+      { id: 'meetings', name: 'Client Meetings', description: 'Professional client interactions', icon: '💻' }
     ]
   },
   {
-    category: 'Formal Events',
+    id: 'formal',
+    name: 'Formal Events',
+    description: 'Special occasions and ceremonies',
+    icon: '🎩',
+    color: 'from-purple-500 to-purple-600',
     items: [
-      { id: 'formal', name: 'Formal Events', description: 'Black-tie and formal occasions' },
-      { id: 'wedding', name: 'Weddings', description: 'Wedding guest attire' },
-      { id: 'dinner', name: 'Dinner Parties', description: 'Elegant dinner occasions' },
-      { id: 'cocktail', name: 'Cocktail Events', description: 'Semi-formal cocktail parties' },
-      { id: 'gala', name: 'Gala Events', description: 'Upscale evening events' }
+      { id: 'formal', name: 'Black Tie Events', description: 'Formal evening occasions', icon: '🎭' },
+      { id: 'wedding', name: 'Weddings', description: 'Wedding guest attire', icon: '💒' },
+      { id: 'dinner', name: 'Dinner Parties', description: 'Elegant dinner occasions', icon: '🍽️' },
+      { id: 'cocktail', name: 'Cocktail Events', description: 'Semi-formal cocktail parties', icon: '🍸' },
+      { id: 'gala', name: 'Gala Events', description: 'Upscale evening events', icon: '✨' }
     ]
   },
   {
-    category: 'Casual & Lifestyle',
+    id: 'casual',
+    name: 'Casual & Lifestyle',
+    description: 'Everyday and relaxed wear',
+    icon: '👕',
+    color: 'from-green-500 to-green-600',
     items: [
-      { id: 'casual', name: 'Casual Wear', description: 'Everyday comfortable clothing' },
-      { id: 'weekend', name: 'Weekend Outings', description: 'Relaxed weekend activities' },
-      { id: 'date', name: 'Date Night', description: 'Romantic dinner or casual dates' },
-      { id: 'smart casual', name: 'Smart Casual', description: 'Polished yet relaxed look' },
-      { id: 'everyday', name: 'Everyday Wear', description: 'Daily comfort and style' }
+      { id: 'casual', name: 'Casual Wear', description: 'Everyday comfortable clothing', icon: '👖' },
+      { id: 'weekend', name: 'Weekend Outings', description: 'Relaxed weekend activities', icon: '🌞' },
+      { id: 'date', name: 'Date Night', description: 'Romantic dinner or casual dates', icon: '💕' },
+      { id: 'smart casual', name: 'Smart Casual', description: 'Polished yet relaxed look', icon: '👌' },
+      { id: 'everyday', name: 'Everyday Wear', description: 'Daily comfort and style', icon: '🏠' }
     ]
   },
   {
-    category: 'Active & Sports',
+    id: 'active',
+    name: 'Active & Sports',
+    description: 'Fitness and athletic wear',
+    icon: '🏃',
+    color: 'from-orange-500 to-orange-600',
     items: [
-      { id: 'gym', name: 'Gym & Fitness', description: 'Workout and exercise gear' },
-      { id: 'sports', name: 'Sports Activities', description: 'Athletic and sports wear' },
-      { id: 'running', name: 'Running', description: 'Running and jogging attire' },
-      { id: 'workout', name: 'Workout Sessions', description: 'Training and fitness clothing' },
-      { id: 'active', name: 'Active Lifestyle', description: 'Performance and active wear' }
+      { id: 'gym', name: 'Gym & Fitness', description: 'Workout and exercise gear', icon: '💪' },
+      { id: 'sports', name: 'Sports Activities', description: 'Athletic and sports wear', icon: '⚽' },
+      { id: 'running', name: 'Running', description: 'Running and jogging attire', icon: '🏃‍♂️' },
+      { id: 'workout', name: 'Workout Sessions', description: 'Training and fitness clothing', icon: '🏋️' },
+      { id: 'active', name: 'Active Lifestyle', description: 'Performance and active wear', icon: '🚴' }
     ]
   },
   {
-    category: 'Seasonal & Special',
+    id: 'seasonal',
+    name: 'Seasonal & Special',
+    description: 'Weather and occasion specific',
+    icon: '🌟',
+    color: 'from-pink-500 to-pink-600',
     items: [
-      { id: 'summer', name: 'Summer Events', description: 'Hot weather occasions' },
-      { id: 'winter', name: 'Winter Occasions', description: 'Cold weather events' },
-      { id: 'vacation', name: 'Vacation & Travel', description: 'Holiday and travel wear' },
-      { id: 'outdoor', name: 'Outdoor Activities', description: 'Nature and outdoor events' },
-      { id: 'party', name: 'Parties', description: 'Social gatherings and celebrations' }
+      { id: 'summer', name: 'Summer Events', description: 'Hot weather occasions', icon: '☀️' },
+      { id: 'winter', name: 'Winter Occasions', description: 'Cold weather events', icon: '❄️' },
+      { id: 'vacation', name: 'Vacation & Travel', description: 'Holiday and travel wear', icon: '✈️' },
+      { id: 'outdoor', name: 'Outdoor Activities', description: 'Nature and outdoor events', icon: '🌲' },
+      { id: 'party', name: 'Parties', description: 'Social gatherings and celebrations', icon: '🎉' }
+    ]
+  },
+  {
+    id: 'special',
+    name: 'Special Occasions',
+    description: 'Unique and memorable events',
+    icon: '🎊',
+    color: 'from-indigo-500 to-indigo-600',
+    items: [
+      { id: 'graduation', name: 'Graduation', description: 'Academic ceremonies', icon: '🎓' },
+      { id: 'anniversary', name: 'Anniversary', description: 'Special milestone celebrations', icon: '💍' },
+      { id: 'birthday', name: 'Birthday Parties', description: 'Birthday celebrations', icon: '🎂' },
+      { id: 'holiday', name: 'Holiday Events', description: 'Festive holiday gatherings', icon: '🎄' },
+      { id: 'cultural', name: 'Cultural Events', description: 'Traditional and cultural occasions', icon: '🎨' }
     ]
   }
 ];
@@ -67,13 +101,33 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
   onOccasionSelect,
   selectedOccasion
 }) => {
-  const [expandedCategory, setExpandedCategory] = useState<string | null>('Professional');
+  const [currentView, setCurrentView] = useState<'categories' | 'items'>('categories');
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
 
   if (!isOpen) return null;
+
+  const handleCategoryClick = (category: any) => {
+    setSelectedCategory(category);
+    setCurrentView('items');
+  };
+
+  const handleBackToCategories = () => {
+    setCurrentView('categories');
+    setSelectedCategory(null);
+  };
 
   const handleOccasionClick = (occasionId: string) => {
     onOccasionSelect(occasionId);
     onClose();
+    setCurrentView('categories');
+    setSelectedCategory(null);
+  };
+
+  const handleClearSelection = () => {
+    onOccasionSelect('');
+    onClose();
+    setCurrentView('categories');
+    setSelectedCategory(null);
   };
 
   return (
@@ -83,23 +137,52 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
       
       {/* Popup Dialog */}
       <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[85vh] overflow-hidden">
-          <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-purple-600 to-blue-600">
-            <h2 className="text-xl font-semibold text-white flex items-center">
-              <Calendar className="h-6 w-6 mr-3" />
-              Shop by Occasion
-            </h2>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
-            >
-              <X className="h-5 w-5 text-white" />
-            </button>
+        <div className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden">
+          {/* Header */}
+          <div className={`p-6 border-b bg-gradient-to-r ${
+            currentView === 'categories' 
+              ? 'from-purple-600 to-blue-600' 
+              : `${selectedCategory?.color} text-white`
+          }`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                {currentView === 'items' && (
+                  <button
+                    onClick={handleBackToCategories}
+                    className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
+                  >
+                    <ArrowLeft className="h-5 w-5 text-white" />
+                  </button>
+                )}
+                <div className="flex items-center space-x-3">
+                  <Calendar className="h-6 w-6 text-white" />
+                  <div>
+                    <h2 className="text-xl font-bold text-white">
+                      {currentView === 'categories' ? 'Shop by Occasion' : selectedCategory?.name}
+                    </h2>
+                    <p className="text-white text-opacity-90 text-sm">
+                      {currentView === 'categories' 
+                        ? 'Choose your occasion to get personalized recommendations'
+                        : selectedCategory?.description
+                      }
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
+              >
+                <X className="h-6 w-6 text-white" />
+              </button>
+            </div>
           </div>
 
-          <div className="p-6 overflow-y-auto max-h-[calc(85vh-120px)]">
+          {/* Content */}
+          <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+            {/* Current Selection Banner */}
             {selectedOccasion && (
-              <div className="mb-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <Sparkles className="h-5 w-5 text-purple-600" />
@@ -107,88 +190,107 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
                       <span className="text-sm font-medium text-purple-800">
                         Currently shopping for:
                       </span>
-                      <p className="text-lg font-semibold text-purple-900">
-                        {occasions.flatMap(cat => cat.items).find(item => item.id === selectedOccasion)?.name}
+                      <p className="text-lg font-bold text-purple-900">
+                        {occasionCategories.flatMap(cat => cat.items).find(item => item.id === selectedOccasion)?.name}
                       </p>
                     </div>
                   </div>
                   <button
-                    onClick={() => onOccasionSelect('')}
-                    className="text-purple-600 hover:text-purple-700 font-medium text-sm bg-white px-3 py-1 rounded-lg border border-purple-300 hover:border-purple-400 transition-colors duration-200"
+                    onClick={handleClearSelection}
+                    className="text-purple-600 hover:text-purple-700 font-medium text-sm bg-white px-4 py-2 rounded-lg border border-purple-300 hover:border-purple-400 transition-all duration-200 hover:shadow-md"
                   >
-                    Clear selection
+                    Clear Selection
                   </button>
                 </div>
               </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {occasions.map((category) => (
-                <div key={category.category} className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            {/* Categories View */}
+            {currentView === 'categories' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {occasionCategories.map((category) => (
                   <button
-                    onClick={() => setExpandedCategory(
-                      expandedCategory === category.category ? null : category.category
-                    )}
-                    className="w-full flex items-center justify-between p-3 bg-white hover:bg-gray-50 rounded-lg transition-colors duration-200 shadow-sm border border-gray-200"
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category)}
+                    className="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
                   >
-                    <span className="font-semibold text-gray-900 text-lg">{category.category}</span>
-                    <ChevronDown 
-                      className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
-                        expandedCategory === category.category ? 'rotate-180' : ''
-                      }`} 
-                    />
-                  </button>
-                  
-                  {expandedCategory === category.category && (
-                    <div className="mt-3 space-y-2">
-                      {category.items.map((occasion) => (
-                        <button
-                          key={occasion.id}
-                          onClick={() => handleOccasionClick(occasion.id)}
-                          className={`w-full text-left p-4 rounded-lg transition-all duration-200 border-2 ${
-                            selectedOccasion === occasion.id 
-                              ? 'bg-purple-100 border-purple-300 shadow-md transform scale-[1.02]' 
-                              : 'bg-white border-gray-200 hover:border-purple-200 hover:bg-purple-50 hover:shadow-sm'
-                          }`}
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <h4 className={`font-medium mb-1 ${
-                                selectedOccasion === occasion.id ? 'text-purple-900' : 'text-gray-900'
-                              }`}>
-                                {occasion.name}
-                              </h4>
-                              <p className={`text-sm ${
-                                selectedOccasion === occasion.id ? 'text-purple-700' : 'text-gray-600'
-                              }`}>
-                                {occasion.description}
-                              </p>
-                            </div>
-                            {selectedOccasion === occasion.id && (
-                              <div className="ml-3 flex-shrink-0">
-                                <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
-                                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </button>
-                      ))}
+                    {/* Gradient Background */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                    
+                    {/* Content */}
+                    <div className="relative p-8 text-center">
+                      <div className="text-4xl mb-4">{category.icon}</div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-800">
+                        {category.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                        {category.description}
+                      </p>
+                      <div className="flex items-center justify-center text-gray-400 group-hover:text-gray-600 transition-colors duration-200">
+                        <span className="text-sm font-medium mr-2">Explore</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </div>
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
 
-            <div className="mt-8 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
+                    {/* Item Count Badge */}
+                    <div className="absolute top-4 right-4 bg-gray-100 group-hover:bg-white text-gray-600 text-xs font-bold px-2 py-1 rounded-full transition-colors duration-200">
+                      {category.items.length}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Items View */}
+            {currentView === 'items' && selectedCategory && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {selectedCategory.items.map((item: any) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleOccasionClick(item.id)}
+                    className={`group relative p-6 rounded-xl transition-all duration-200 text-left border-2 ${
+                      selectedOccasion === item.id 
+                        ? 'bg-purple-100 border-purple-300 shadow-lg transform scale-105' 
+                        : 'bg-white border-gray-200 hover:border-purple-200 hover:bg-purple-50 hover:shadow-md hover:transform hover:scale-102'
+                    }`}
+                  >
+                    <div className="flex items-start space-x-4">
+                      <div className="text-2xl flex-shrink-0">{item.icon}</div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className={`font-bold mb-2 ${
+                          selectedOccasion === item.id ? 'text-purple-900' : 'text-gray-900 group-hover:text-purple-800'
+                        }`}>
+                          {item.name}
+                        </h4>
+                        <p className={`text-sm leading-relaxed ${
+                          selectedOccasion === item.id ? 'text-purple-700' : 'text-gray-600 group-hover:text-purple-600'
+                        }`}>
+                          {item.description}
+                        </p>
+                      </div>
+                      {selectedOccasion === item.id && (
+                        <div className="flex-shrink-0">
+                          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Personalization Info */}
+            <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
               <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <Sparkles className="h-6 w-6 text-purple-600" />
+                  <Sparkles className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-purple-900 mb-2">Personalized Recommendations</h4>
-                  <p className="text-sm text-purple-800 leading-relaxed">
-                    Our AI analyzes your profile preferences, size, style choices, and preferred brands to curate the perfect collection for your selected occasion. Get recommendations tailored specifically for you!
+                  <h4 className="font-bold text-blue-900 mb-2">🎯 Personalized Just for You</h4>
+                  <p className="text-sm text-blue-800 leading-relaxed">
+                    Our AI analyzes your profile preferences, size, style choices, and preferred brands to curate the perfect collection for your selected occasion. Get recommendations tailored specifically to your taste and needs!
                   </p>
                 </div>
               </div>
