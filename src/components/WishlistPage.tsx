@@ -18,7 +18,7 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
   onToggleWishlist,
   onProductClick
 }) => {
-  const [alertSettings, setAlertSettings] = React.useState<{[key: string]: {priceAlert: boolean, stockAlert: boolean, whatsappNumber: string}}>({});
+  const [alertSettings, setAlertSettings] = React.useState<{[key: string]: {priceAlert: boolean, stockAlert: boolean}}>({});
   const [showAlertModal, setShowAlertModal] = React.useState<string | null>(null);
 
   const wishlistProducts = products.filter(product => wishlistItems.includes(product.id));
@@ -253,7 +253,7 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
                     
                     <AlertSetupForm
                       product={products.find(p => p.id === showAlertModal)!}
-                      currentSettings={alertSettings[showAlertModal] || {priceAlert: false, stockAlert: false, whatsappNumber: ''}}
+                      currentSettings={alertSettings[showAlertModal] || {priceAlert: false, stockAlert: false}}
                       onSave={(settings) => handleSetAlert(showAlertModal, settings)}
                       onCancel={() => setShowAlertModal(null)}
                     />
@@ -292,15 +292,14 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
 // Alert Setup Form Component
 interface AlertSetupFormProps {
   product: Product;
-  currentSettings: {priceAlert: boolean, stockAlert: boolean, whatsappNumber: string};
-  onSave: (settings: {priceAlert: boolean, stockAlert: boolean, whatsappNumber: string}) => void;
+  currentSettings: {priceAlert: boolean, stockAlert: boolean};
+  onSave: (settings: {priceAlert: boolean, stockAlert: boolean}) => void;
   onCancel: () => void;
 }
 
 const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSettings, onSave, onCancel }) => {
   const [priceAlert, setPriceAlert] = React.useState(currentSettings.priceAlert);
   const [stockAlert, setStockAlert] = React.useState(currentSettings.stockAlert);
-  const [whatsappNumber, setWhatsappNumber] = React.useState(currentSettings.whatsappNumber);
 
   const handleSave = () => {
     if (!priceAlert && !stockAlert) {
@@ -308,7 +307,7 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
       return;
     }
     
-    onSave({ priceAlert, stockAlert, whatsappNumber: '' });
+    onSave({ priceAlert, stockAlert });
   };
 
   return (
@@ -359,12 +358,12 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
       </div>
       
       {/* Smart Notifications Info */}
-      <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
         <div className="flex items-start space-x-3">
-          <Bell className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <Bell className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
           <div>
-            <h4 className="font-medium text-blue-900 mb-1">Smart Notifications</h4>
-            <p className="text-sm text-blue-800 leading-relaxed">
+            <h4 className="font-medium text-green-900 mb-1">Smart Notifications</h4>
+            <p className="text-sm text-green-800 leading-relaxed">
               You'll receive instant notifications when your selected alerts are triggered. 
               Notifications include product details, current price, and direct purchase links.
             </p>
@@ -382,7 +381,7 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
         </button>
         <button
           onClick={handleSave}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
+          className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
         >
           <Bell className="h-4 w-4" />
           <span>Set Alert</span>
