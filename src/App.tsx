@@ -9,6 +9,7 @@ import ProductModal from './components/ProductModal';
 import StoresView from './components/StoresView';
 import ProfilePage from './components/ProfilePage';
 import OccasionMenu from './components/OccasionMenu';
+import WishlistPage from './components/WishlistPage';
 import { useSearch } from './hooks/useSearch';
 import { products } from './data/products';
 import { stores } from './data/stores';
@@ -26,6 +27,7 @@ function App() {
   const [showImageResults, setShowImageResults] = useState(false);
   const [isOnlineMode, setIsOnlineMode] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
+  const [showWishlist, setShowWishlist] = useState(false);
   const [currentView, setCurrentView] = useState<'home' | 'search' | 'stores'>('home');
   const [userProfile, setUserProfile] = useState({
     preferredBrands: ['Louis Philippe', 'Van Heusen'],
@@ -144,6 +146,19 @@ function App() {
       <ProfilePage 
         onBack={() => setShowProfile(false)} 
         onProfileUpdate={setUserProfile}
+      />
+    );
+  }
+
+  // Show wishlist page if selected
+  if (showWishlist) {
+    return (
+      <WishlistPage
+        onBack={() => setShowWishlist(false)}
+        wishlistItems={wishlistItems}
+        products={products}
+        onToggleWishlist={handleToggleWishlist}
+        onProductClick={setSelectedProduct}
       />
     );
   }
@@ -338,7 +353,9 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       <Header
         cartItemsCount={totalCartItems}
+        wishlistItemsCount={wishlistItems.length}
         onCartClick={() => setIsCartOpen(true)}
+        onWishlistClick={() => setShowWishlist(true)}
         onImageSearchClick={() => setIsImageSearchOpen(true)}
         onProfileClick={() => setShowProfile(true)}
         onOccasionMenuClick={() => setIsOccasionMenuOpen(true)}

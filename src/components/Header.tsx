@@ -1,9 +1,11 @@
 import React from 'react';
-import { Search, ShoppingBag, Camera, User, Calendar, ArrowLeft } from 'lucide-react';
+import { Search, ShoppingBag, Camera, User, Calendar, ArrowLeft, Heart } from 'lucide-react';
 
 interface HeaderProps {
   cartItemsCount: number;
+  wishlistItemsCount: number;
   onCartClick: () => void;
+  onWishlistClick: () => void;
   onImageSearchClick: () => void;
   onProfileClick: () => void;
   onOccasionMenuClick: () => void;
@@ -17,7 +19,9 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   cartItemsCount,
+  wishlistItemsCount,
   onCartClick,
+  onWishlistClick,
   onImageSearchClick,
   onProfileClick,
   onOccasionMenuClick,
@@ -117,6 +121,19 @@ const Header: React.FC<HeaderProps> = ({
               title="Profile"
             >
               <User className="h-6 w-6" />
+            </button>
+            
+            <button
+              onClick={onWishlistClick}
+              className="relative p-2 text-gray-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors duration-200"
+              title="Wishlist"
+            >
+              <Heart className="h-6 w-6" />
+              {wishlistItemsCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {wishlistItemsCount}
+                </span>
+              )}
             </button>
             
             <button
