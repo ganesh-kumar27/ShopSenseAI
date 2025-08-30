@@ -228,7 +228,6 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
                 )}
                 
                 <button
-                  onClick={() => window.open(`tel:${store.phone}`, '_self')}
                   onClick={() => setShowCallScheduling(true)}
                   className="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                 >
@@ -317,9 +316,6 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
                     <li>• Receive styling tips and outfit recommendations</li>
                   </ul>
                 </div>
-    </>
-  );
-};
 
                 <div className="space-y-3">
                   <button
@@ -349,4 +345,8 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
           </div>
         </>
       )}
+    </>
+  );
+};
+
 export default StoreModal;
