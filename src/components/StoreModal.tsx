@@ -36,8 +36,8 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
   };
 
   const handleVideoCall = () => {
-    // In a real app, this would integrate with video calling services
-    alert(`Starting video call with ${store.name}...\n\nVideo consultation available during: ${store.videoCallHours || 'Business hours'}\n\nThis would normally open your video calling app or web interface.`);
+    // This would open the video call booking modal
+    alert(`Video call booking feature available!\n\nThis would open the video call slot booking interface where you can schedule a 15-minute consultation with ${store.name}.`);
   };
 
   const status = getCurrentStatus();
@@ -227,7 +227,9 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
                 )}
                 
                 <button
+                  onClick={() => window.open(`tel:${store.phone}`, '_self')}
                   onClick={() => setShowCallScheduling(true)}
+                  className="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                 >
                   <Phone className="h-5 w-5" />
                 </button>

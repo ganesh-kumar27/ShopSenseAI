@@ -1,8 +1,9 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { Star, MapPin, Phone, Clock, ExternalLink, Navigation, X, Video } from 'lucide-react';
+import { Star, MapPin, Phone, Clock, ExternalLink, Navigation, X, Video, Calendar } from 'lucide-react';
 import { Store } from '../types/Store';
 import CallSchedulingModal from './CallSchedulingModal';
+import VideoCallBookingModal from './VideoCallBookingModal';
 
 interface StoreCardProps {
   store: Store;
@@ -13,6 +14,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
   const [showReviewPopup, setShowReviewPopup] = React.useState(false);
   const [showPromotionPopup, setShowPromotionPopup] = React.useState(false);
   const [showCallScheduling, setShowCallScheduling] = React.useState(false);
+  const [showVideoCallBooking, setShowVideoCallBooking] = React.useState(false);
 
   const getPriceRangeText = (range: string) => {
     switch (range) {
@@ -42,8 +44,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
 
   const handleVideoCall = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // In a real app, this would integrate with video calling services like Zoom, Teams, or WebRTC
-    alert(`Starting video call with ${store.name}...\n\nVideo consultation available during: ${store.videoCallHours || 'Business hours'}\n\nThis would normally open your video calling app or web interface.`);
+    setShowVideoCallBooking(true);
   };
 
   const status = getCurrentStatus();
@@ -171,7 +172,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
               title="Start Video Call"
             >
               <Video className="h-4 w-4" />
-              <span className="text-sm font-medium">Call</span>
+              <span className="text-sm font-medium">Video</span>
             </button>
           )}
           
@@ -205,11 +206,11 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
         onClose={() => setShowCallScheduling(false)}
       />
 
-      {/* Call Scheduling Modal */}
-      <CallSchedulingModal
+      {/* Video Call Booking Modal */}
+      <VideoCallBookingModal
         store={store}
-        isOpen={showCallScheduling}
-        onClose={() => setShowCallScheduling(false)}
+        isOpen={showVideoCallBooking}
+        onClose={() => setShowVideoCallBooking(false)}
       />
 
       {/* Review Summary Popup */}
