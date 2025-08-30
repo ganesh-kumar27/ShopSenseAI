@@ -33,14 +33,14 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
   const handleSetAlert = (productId: string, settings: {priceAlert: boolean, stockAlert: boolean, whatsappNumber: string}) => {
     setAlertSettings(prev => ({
       ...prev,
-      [productId]: settings
+      [productId]: { ...settings, whatsappNumber: '' }
     }));
     setShowAlertModal(null);
     
     // Simulate WhatsApp alert setup
     const product = products.find(p => p.id === productId);
-    if (product && settings.whatsappNumber) {
-      alert(`Alert set up successfully! 🔔\n\nProduct: ${product.name}\nWhatsApp: ${settings.whatsappNumber}\n\nYou'll receive notifications for:\n${settings.priceAlert ? '• Price drops\n' : ''}${settings.stockAlert ? '• Stock availability\n' : ''}\nNote: In a real app, this would integrate with WhatsApp Business API.`);
+    if (product) {
+      alert(`Alert set up successfully! 🔔\n\nProduct: ${product.name}\n\nYou'll receive WhatsApp notifications for:\n${settings.priceAlert ? '• Price drops\n' : ''}${settings.stockAlert ? '• Stock availability\n' : ''}\nNote: In a real app, this would integrate with WhatsApp Business API.`);
     }
   };
 
@@ -84,7 +84,7 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {wishlistProducts.length === 0 ? (
           /* Empty Wishlist State */
-          <div className="text-center py-16">
+          <div className="text-center py-8 lg:py-16">
             <div className="max-w-md mx-auto">
               <Heart className="h-16 w-16 mx-auto text-gray-300 mb-6" />
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Your wishlist is empty</h2>
@@ -103,17 +103,17 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
           /* Wishlist Products */
           <div>
             {/* Wishlist Stats */}
-            <div className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-100">
-              <div className="flex items-center justify-between">
+            <div className="bg-white rounded-xl shadow-sm p-4 lg:p-6 mb-6 lg:mb-8 border border-gray-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
                 <div className="flex items-center space-x-4">
                   <div className="bg-rose-100 p-3 rounded-xl">
                     <Heart className="h-6 w-6 text-rose-600 fill-current" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-base lg:text-lg font-semibold text-gray-900">
                       {wishlistProducts.length} Saved Item{wishlistProducts.length !== 1 ? 's' : ''}
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm lg:text-base">
                       Total value: ${wishlistProducts.reduce((sum, product) => sum + product.price, 0).toFixed(2)}
                     </p>
                   </div>
@@ -135,9 +135,9 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
             <div className="space-y-6">
               {wishlistProducts.map((product) => (
                 <div key={product.id} className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 lg:p-6">
                     {/* Product Image */}
-                    <div className="md:col-span-1">
+                    <div className="lg:col-span-1">
                       <div className="aspect-square overflow-hidden rounded-lg cursor-pointer" onClick={() => onProductClick(product)}>
                         <img
                           src={product.image}
@@ -148,20 +148,20 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
                     </div>
                     
                     {/* Product Details */}
-                    <div className="md:col-span-2 flex flex-col justify-between">
+                    <div className="lg:col-span-2 flex flex-col justify-between">
                       <div className="cursor-pointer" onClick={() => onProductClick(product)}>
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 space-y-1 sm:space-y-0">
                           <p className="text-sm text-blue-600 font-medium">{product.brand}</p>
                           <span className="text-sm text-gray-500">{product.platform}</span>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors duration-200">
+                        <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors duration-200">
                           {product.name}
                         </h3>
                         <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
                         
-                        <div className="flex items-center space-x-4 mb-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mb-3">
                           <div className="flex items-center space-x-2">
-                            <span className="text-xl font-bold text-gray-900">${product.price}</span>
+                            <span className="text-lg lg:text-xl font-bold text-gray-900">${product.price}</span>
                             {product.originalPrice && (
                               <span className="text-sm text-gray-500 line-through">
                                 ${product.originalPrice}
@@ -189,8 +189,8 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
                       </div>
                       
                       {/* Actions */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0">
+                        <div className="flex items-center space-x-2 flex-wrap gap-2">
                           <button
                             onClick={() => onToggleWishlist(product.id)}
                             className="flex items-center space-x-1 text-rose-600 hover:text-rose-700 hover:bg-rose-50 px-3 py-2 rounded-lg transition-colors duration-200"
@@ -214,7 +214,7 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
                           </button>
                         </div>
                         
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center justify-between sm:justify-end space-x-2">
                           <span className={`text-sm font-medium ${product.inStock ? 'text-green-600' : 'text-red-600'}`}>
                             {product.inStock ? 'In Stock' : 'Out of Stock'}
                           </span>
@@ -292,15 +292,14 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
 // Alert Setup Form Component
 interface AlertSetupFormProps {
   product: Product;
-  currentSettings: {priceAlert: boolean, stockAlert: boolean, whatsappNumber: string};
-  onSave: (settings: {priceAlert: boolean, stockAlert: boolean, whatsappNumber: string}) => void;
+  currentSettings: {priceAlert: boolean, stockAlert: boolean};
+  onSave: (settings: {priceAlert: boolean, stockAlert: boolean}) => void;
   onCancel: () => void;
 }
 
 const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSettings, onSave, onCancel }) => {
   const [priceAlert, setPriceAlert] = React.useState(currentSettings.priceAlert);
   const [stockAlert, setStockAlert] = React.useState(currentSettings.stockAlert);
-  const [whatsappNumber, setWhatsappNumber] = React.useState(currentSettings.whatsappNumber);
 
   const handleSave = () => {
     if (!priceAlert && !stockAlert) {
@@ -308,7 +307,7 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
       return;
     }
     
-    onSave({ priceAlert, stockAlert, whatsappNumber: '' });
+    onSave({ priceAlert, stockAlert });
   };
 
   return (
@@ -359,12 +358,12 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
       </div>
       
       {/* WhatsApp Integration Info */}
-      <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
+      <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200 w-full">
         <div className="flex items-start space-x-3">
           <MessageCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
           <div>
             <h4 className="font-medium text-green-900 mb-1">WhatsApp Notifications</h4>
-            <p className="text-sm text-green-800 leading-relaxed">
+            <p className="text-sm text-green-800 leading-relaxed break-words">
               You'll receive instant WhatsApp messages when your selected alerts are triggered. 
               Messages include product details, current price, and direct purchase links.
             </p>
@@ -373,7 +372,7 @@ const AlertSetupForm: React.FC<AlertSetupFormProps> = ({ product, currentSetting
       </div>
       
       {/* Action Buttons */}
-      <div className="flex space-x-3">
+      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
         <button
           onClick={onCancel}
           className="flex-1 border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-colors duration-200 font-medium"
