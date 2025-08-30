@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Heart, ShoppingBag, Trash2, Bell, MessageCircle, Settings, X } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingBag, Trash2, Bell, MessageCircle, Settings, X, Star } from 'lucide-react';
 import { Product } from '../types/Product';
 import ProductCard from './ProductCard';
 
