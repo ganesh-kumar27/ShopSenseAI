@@ -207,20 +207,20 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
 
             {/* Categories View */}
             {currentView === 'categories' && (
-              <div className="flex flex-wrap gap-4 justify-center">
+              <div className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: 'thin' }}>
                 {occasionCategories.map((category) => (
                   <button
                     key={category.id}
                     onClick={() => handleCategoryClick(category)}
-                    className="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 flex-shrink-0 w-48"
+                    className="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 flex-shrink-0 w-44 min-w-44"
                   >
                     {/* Gradient Background */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
                     
                     {/* Content */}
-                    <div className="relative p-6 text-center">
+                    <div className="relative p-4 text-center">
                       <div className="text-3xl mb-3">{category.icon}</div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-gray-800">
+                      <h3 className="text-base font-bold text-gray-900 mb-2 group-hover:text-gray-800">
                         {category.name}
                       </h3>
                       <p className="text-gray-600 text-xs mb-3 leading-relaxed">
@@ -233,7 +233,7 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
                     </div>
 
                     {/* Item Count Badge */}
-                    <div className="absolute top-3 right-3 bg-gray-100 group-hover:bg-white text-gray-600 text-xs font-bold px-2 py-1 rounded-full transition-colors duration-200">
+                    <div className="absolute top-2 right-2 bg-gray-100 group-hover:bg-white text-gray-600 text-xs font-bold px-2 py-1 rounded-full transition-colors duration-200">
                       {category.items.length}
                     </div>
                   </button>
