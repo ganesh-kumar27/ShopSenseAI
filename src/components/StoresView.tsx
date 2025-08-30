@@ -55,29 +55,6 @@ const StoresView: React.FC<StoresViewProps> = ({ stores, tailors, onProductClick
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="text-center py-6">
-        <div className="flex items-center justify-center mb-4">
-          {activeTab === 'stores' ? (
-            <>
-              <Building2 className="h-8 w-8 text-blue-600 mr-3" />
-              <h1 className="text-3xl font-bold text-gray-900">Nearby Retail Stores</h1>
-            </>
-          ) : (
-            <>
-              <Scissors className="h-8 w-8 text-purple-600 mr-3" />
-              <h1 className="text-3xl font-bold text-gray-900">Custom Tailoring Services</h1>
-            </>
-          )}
-        </div>
-        <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          {activeTab === 'stores' 
-            ? 'Discover local clothing stores near you. Browse ratings, reviews, and get directions to find the perfect place to shop.'
-            : 'Find verified professional tailors near you. Get custom clothing, alterations, and expert craftsmanship with transparent pricing and reviews.'
-          }
-        </p>
-      </div>
-
       {/* Tab Navigation */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="flex">
