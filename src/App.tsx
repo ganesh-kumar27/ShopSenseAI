@@ -306,24 +306,25 @@ function App() {
                   </div>
                   
                   <div className="flex-1 flex flex-col justify-center">
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div className="mb-4 flex items-center justify-center">
-                  <div className="mb-6 h-16 flex items-center justify-center">
-                    <button
-                      onClick={() => setIsOccasionMenuOpen(true)}
-                      className="bg-purple-600 hover:bg-purple-700 text-white py-4 px-8 rounded-xl transition-colors duration-200 font-semibold text-lg"
-                    >
-                      Browse All Occasions →
-                    </button>
-                  </div>
-                  
-                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>Event-Based Shopping</span>
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div className="mb-4 flex items-center justify-center">
+                        <div className="mb-6 h-16 flex items-center justify-center">
+                          <button
+                            onClick={() => setIsOccasionMenuOpen(true)}
+                            className="bg-purple-600 hover:bg-purple-700 text-white py-4 px-8 rounded-xl transition-colors duration-200 font-semibold text-lg"
+                          >
+                            Browse All Occasions →
+                          </button>
+                        </div>
+                        
+                        <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="h-4 w-4" />
+                            <span>Event-Based Shopping</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  </div>
                   </div>
                 </div>
               </div>
@@ -434,7 +435,8 @@ function App() {
 
               <ProductGrid
                 products={displayProducts}
-                <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 h-full flex flex-col">
+                onProductClick={setSelectedProduct}
+                onAddToCart={handleAddToCart}
                 wishlistItems={wishlistItems}
                 onToggleWishlist={handleToggleWishlist}
               />
