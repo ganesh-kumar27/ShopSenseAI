@@ -42,6 +42,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick, isIn
             Sale
           </div>
         )}
+        {/* Wishlist Icon */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleWishlist(product.id);
+          }}
+          className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
+            isInWishlist
+              ? 'bg-rose-100 text-rose-600 hover:bg-rose-200'
+              : 'bg-white bg-opacity-90 text-gray-400 hover:text-rose-500 hover:bg-opacity-100'
+          }`}
+          title={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+        >
+          <Heart className={`h-4 w-4 ${isInWishlist ? 'fill-current' : ''}`} />
+        </button>
         {!product.inStock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white font-semibold text-lg">Out of Stock</span>
@@ -85,34 +100,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick, isIn
             )}
           </div>
           
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleWishlist(product.id);
-              }}
-              className={`p-2 rounded-lg transition-all duration-200 ${
-                isInWishlist
-                  ? 'bg-rose-100 text-rose-600 hover:bg-rose-200'
-                  : 'border border-gray-300 text-gray-400 hover:text-rose-500 hover:border-rose-300'
-              }`}
-              title={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-            >
-              <Heart className={`h-4 w-4 ${isInWishlist ? 'fill-current' : ''}`} />
-            </button>
-            
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                // Navigate to external e-commerce site
-                window.open(`https://${product.platform.toLowerCase()}.com`, '_blank');
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors duration-200 flex items-center space-x-1"
-              title={`Visit ${product.platform}`}
-            >
-              <ExternalLink className="h-4 w-4" />
-            </button>
-          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              // Navigate to external e-commerce site
+              window.open(`https://${product.platform.toLowerCase()}.com`, '_blank');
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors duration-200 flex items-center space-x-1"
+            title={`Visit ${product.platform}`}
+          >
+            <ExternalLink className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
