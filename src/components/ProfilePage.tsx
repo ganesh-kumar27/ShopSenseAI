@@ -9,39 +9,46 @@ interface ProfilePageProps {
 const ProfilePage: React.FC<ProfilePageProps> = ({ onBack }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    gender: '',
-    dateOfBirth: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    preferredSize: '',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    phone: '+1 (555) 123-4567',
+    gender: 'Male',
+    dateOfBirth: '1990-01-15',
+    address: '123 Main Street',
+    city: 'San Francisco',
+    state: 'CA',
+    zipCode: '94102',
+    preferredSize: 'L',
     preferredBrands: [] as string[],
     stylePreferences: [] as string[],
     profileImage: '',
     // Body Measurements
-    chest: '',
-    waist: '',
-    hips: '',
-    shoulders: '',
-    neck: '',
-    sleeves: '',
-    inseam: '',
-    outseam: '',
-    thigh: '',
+    chest: '40',
+    waist: '32',
+    hips: '38',
+    shoulders: '18',
+    neck: '15.5',
+    sleeves: '25',
+    inseam: '32',
+    outseam: '42',
+    thigh: '22',
     // Additional measurements for women
     bust: '',
     underbust: '',
     // Height and weight
-    height: '',
-    weight: ''
+    height: '5\'10"',
+    weight: '175'
   });
 
   const [tempData, setTempData] = useState(profileData);
+
+  // Update tempData when profileData changes or when editing starts
+  React.useEffect(() => {
+    if (isEditing) {
+      setTempData(profileData);
+    }
+  }, [isEditing, profileData]);
 
   const handleInputChange = (field: string, value: string) => {
     setTempData(prev => ({ ...prev, [field]: value }));
