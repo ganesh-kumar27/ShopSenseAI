@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick, isIn
   };
 
   return (
-    <div className="group cursor-pointer bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100">
+    <div className="group cursor-pointer bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100 h-full flex flex-col">
       <div className="relative overflow-hidden" onClick={() => onProductClick(product)}>
         <img
           src={product.image}
@@ -49,16 +49,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick, isIn
         )}
       </div>
       
-      <div className="p-4">
-        <div className="mb-2" onClick={() => onProductClick(product)}>
+      <div className="p-4 flex-1 flex flex-col">
+        <div className="mb-2 flex-1" onClick={() => onProductClick(product)}>
           {getPlatformLogo(product.platform)}
           <p className="text-sm text-gray-500 mb-1">{product.brand}</p>
-          <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+          <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 min-h-[3rem]">
             {product.name}
           </h3>
         </div>
         
-        <div className="flex items-center mb-3">
+        <div className="flex items-center mb-2">
           <div className="flex items-center">
             <button
               onClick={(e) => {
@@ -75,7 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick, isIn
           </div>
         </div>
         
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-auto">
           <div className="flex items-center space-x-2">
             <span className="text-lg font-bold text-gray-900">${product.price}</span>
             {product.originalPrice && (
