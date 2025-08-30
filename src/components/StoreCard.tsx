@@ -13,7 +13,6 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
   const [showReviewPopup, setShowReviewPopup] = React.useState(false);
   const [showPromotionPopup, setShowPromotionPopup] = React.useState(false);
   const [showCallScheduling, setShowCallScheduling] = React.useState(false);
-  const [showCallScheduling, setShowCallScheduling] = React.useState(false);
 
   const getPriceRangeText = (range: string) => {
     switch (range) {
