@@ -214,4 +214,4 @@ const ProductModal: React.FC<ProductModalProps> = ({
   );
 };
 
-export default ImageSearch;
+export default ProductModal;
