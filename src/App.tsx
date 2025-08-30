@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Camera, Calendar, User } from 'lucide-react';
+import { Search, Camera, Calendar, User, Heart } from 'lucide-react';
 import Header from './components/Header';
 import ProductGrid from './components/ProductGrid';
 import SearchFilters from './components/SearchFilters';
