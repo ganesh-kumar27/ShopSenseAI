@@ -12,7 +12,7 @@ interface StoreModalProps {
 
 const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
   const [showCallScheduling, setShowCallScheduling] = React.useState(false);
-  const [showVideoCallBooking, setShowVideoCallBooking] = React.useState(false);
+  const [showVideoCallPopup, setShowVideoCallPopup] = React.useState(false);
 
   if (!isOpen || !store) return null;
 
@@ -38,7 +38,7 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
   };
 
   const handleVideoCall = () => {
-    setShowVideoCallBooking(true);
+    setShowVideoCallPopup(true);
   };
 
   const status = getCurrentStatus();
@@ -268,14 +268,85 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
         onClose={() => setShowCallScheduling(false)}
       />
 
-      {/* Video Call Booking Modal */}
-      <VideoCallBookingModal
-        store={store}
-        isOpen={showVideoCallBooking}
-        onClose={() => setShowVideoCallBooking(false)}
-      />
+      {/* Video Call Popup */}
+      {showVideoCallPopup && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-[9999]" 
+            onClick={() => setShowVideoCallPopup(false)} 
+          />
+          
+          {/* Popup Modal */}
+          <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4">
+            <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto">
+              <div className="flex items-center justify-between p-4 border-b">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Video className="h-5 w-5 fill-current text-green-600 mr-2" />
+                  Video Consultation
+                </h3>
+                <button
+                  onClick={() => setShowVideoCallPopup(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+              
+              <div className="p-4">
+                <div className="mb-4">
+                  <h4 className="font-medium text-gray-900 mb-2">{store.name}</h4>
+                  <p className="text-sm text-gray-600 mb-2">{store.brand} • {store.phone}</p>
+                  <div className="flex items-center mb-2">
+                    <Star className="h-4 w-4 fill-current text-yellow-400" />
+                    <span className="ml-1 text-sm font-medium text-gray-700">
+                      {store.rating} out of 5 stars ({store.reviews} reviews)
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="bg-green-50 rounded-lg p-4 mb-4 border border-green-200">
+                  <h5 className="font-medium text-green-900 mb-2">📹 15-Minute Video Consultation Available</h5>
+                  <p className="text-sm text-green-800 leading-relaxed mb-3">
+                    Connect with our style experts for personalized assistance during: {store.videoCallHours || 'Business hours'}
+                  </p>
+                  <ul className="text-sm text-green-800 space-y-1">
+                    <li>• Get personalized style advice from store experts</li>
+                    <li>• See products up close with live video demonstration</li>
+                    <li>• Ask questions about fit, sizing, and availability</li>
+                    <li>• Receive styling tips and outfit recommendations</li>
+                  </ul>
+                </div>
     </>
   );
 };
 
+                <div className="space-y-3">
+                  <button
+                    onClick={() => {
+                      setShowVideoCallPopup(false);
+                      // Simulate booking process
+                      setTimeout(() => {
+                        alert(`Video consultation booking initiated! 📹\n\nStore: ${store.name}\nService: 15-minute video consultation\n\nIn a real app, this would open a booking system to schedule your video call with available time slots.`);
+                      }, 100);
+                    }}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
+                  >
+                    <Video className="h-5 w-5" />
+                    <span>Book 15-min Video Call</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => window.open(`tel:${store.phone}`, '_self')}
+                    className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
+                  >
+                    <Phone className="h-5 w-5" />
+                    <span>Call Store Directly</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 export default StoreModal;
