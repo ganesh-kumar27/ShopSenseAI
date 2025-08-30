@@ -3,7 +3,7 @@ import { Search, Camera, Calendar, User, Heart } from 'lucide-react';
 import Header from './components/Header';
 import ProductGrid from './components/ProductGrid';
 import SearchFilters from './components/SearchFilters';
-import ShoppingCart from './components/ShoppingCart';
+import ShoppingCart from './components/ShoppingCart.tsx';
 import ImageSearch from './components/ImageSearch';
 import ProductModal from './components/ProductModal';
 import StoresView from './components/StoresView';
