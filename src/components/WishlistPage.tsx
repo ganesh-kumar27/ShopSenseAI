@@ -132,100 +132,82 @@ const WishlistPage: React.FC<WishlistPageProps> = ({
             </div>
 
             {/* Products Grid */}
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {wishlistProducts.map((product) => (
-                <div key={product.id} className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
-                    {/* Product Image */}
-                    <div className="md:col-span-1">
-                      <div className="aspect-square overflow-hidden rounded-lg cursor-pointer" onClick={() => onProductClick(product)}>
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
+                <div key={product.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 group">
+                  {/* Product Image */}
+                  <div className="relative aspect-square overflow-hidden cursor-pointer" onClick={() => onProductClick(product)}>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {product.originalPrice && (
+                      <div className="absolute top-2 left-2 bg-rose-500 text-white px-2 py-1 rounded text-xs font-medium">
+                        Sale
+                      </div>
+                    )}
+                    <div className="absolute top-2 right-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleWishlist(product.id);
+                        }}
+                        className="p-1.5 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full transition-all duration-200 shadow-sm"
+                      >
+                        <Heart className="h-4 w-4 text-rose-500 fill-current" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Product Details */}
+                  <div className="p-3">
+                    <div className="cursor-pointer" onClick={() => onProductClick(product)}>
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-xs text-blue-600 font-medium">{product.brand}</p>
+                        <span className="text-xs text-gray-500">{product.platform}</span>
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-sm mb-1 hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+                        {product.name}
+                      </h3>
+                      
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="text-lg font-bold text-gray-900">${product.price}</span>
+                        {product.originalPrice && (
+                          <span className="text-xs text-gray-500 line-through">
+                            ${product.originalPrice}
+                          </span>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center mb-2">
+                        <Star className="h-3 w-3 fill-current text-yellow-400" />
+                        <span className="ml-1 text-xs text-gray-600">
+                          {product.rating} ({product.reviews})
+                        </span>
                       </div>
                     </div>
                     
-                    {/* Product Details */}
-                    <div className="md:col-span-2 flex flex-col justify-between">
-                      <div className="cursor-pointer" onClick={() => onProductClick(product)}>
-                        <div className="flex items-center justify-between mb-2">
-                          <p className="text-sm text-blue-600 font-medium">{product.brand}</p>
-                          <span className="text-sm text-gray-500">{product.platform}</span>
-                        </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors duration-200">
-                          {product.name}
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
-                        
-                        <div className="flex items-center space-x-4 mb-3">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-xl font-bold text-gray-900">${product.price}</span>
-                            {product.originalPrice && (
-                              <span className="text-sm text-gray-500 line-through">
-                                ${product.originalPrice}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex items-center">
-                            <Heart className="h-4 w-4 fill-current text-yellow-400" />
-                            <span className="ml-1 text-sm text-gray-600">
-                              {product.rating} ({product.reviews} reviews)
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {product.tags.slice(0, 3).map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                    {/* Actions */}
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                      <button
+                        onClick={() => setShowAlertModal(product.id)}
+                        className={`flex items-center space-x-1 px-2 py-1 rounded text-xs font-medium transition-colors duration-200 ${
+                          alertSettings[product.id] 
+                            ? 'text-green-600 bg-green-50 hover:bg-green-100' 
+                            : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
+                        }`}
+                      >
+                        <Bell className="h-3 w-3" />
+                        <span>{alertSettings[product.id] ? 'Alert Set' : 'Alert'}</span>
+                      </button>
                       
-                      {/* Actions */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() => onToggleWishlist(product.id)}
-                            className="flex items-center space-x-1 text-rose-600 hover:text-rose-700 hover:bg-rose-50 px-3 py-2 rounded-lg transition-colors duration-200"
-                          >
-                            <Heart className="h-4 w-4 fill-current" />
-                            <span className="text-sm font-medium">Remove</span>
-                          </button>
-                          
-                          <button
-                            onClick={() => setShowAlertModal(product.id)}
-                            className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors duration-200 ${
-                              alertSettings[product.id] 
-                                ? 'text-green-600 bg-green-50 hover:bg-green-100' 
-                                : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
-                            }`}
-                          >
-                            <Bell className="h-4 w-4" />
-                            <span className="text-sm font-medium">
-                              {alertSettings[product.id] ? 'Alert Set' : 'Set Alert'}
-                            </span>
-                          </button>
-                        </div>
-                        
-                        <div className="flex items-center space-x-2">
-                          <span className={`text-sm font-medium ${product.inStock ? 'text-green-600' : 'text-red-600'}`}>
-                            {product.inStock ? 'In Stock' : 'Out of Stock'}
-                          </span>
-                          <button
-                            onClick={() => window.open(`https://${product.platform.toLowerCase()}.com`, '_blank')}
-                            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium text-sm"
-                          >
-                            Visit Store
-                          </button>
-                        </div>
-                      </div>
+                      <button
+                        onClick={() => window.open(`https://${product.platform.toLowerCase()}.com`, '_blank')}
+                        className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded text-xs font-medium transition-colors duration-200"
+                      >
+                        Visit Store
+                      </button>
                     </div>
                   </div>
                 </div>
