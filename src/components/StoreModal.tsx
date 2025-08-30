@@ -227,7 +227,6 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
                 )}
                 
                 <button
-                  onClick={() => window.open(`tel:${store.phone}`, '_self')}
                   onClick={() => setShowCallScheduling(true)}
                   className="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                 >
