@@ -57,6 +57,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick, isIn
         >
           <Heart className={`h-4 w-4 ${isInWishlist ? 'fill-current' : ''}`} />
         </button>
+        {/* Wishlist Icon */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleWishlist(product.id);
+          }}
+          className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
+            isInWishlist
+              ? 'bg-rose-100 text-rose-600 hover:bg-rose-200'
+              : 'bg-white bg-opacity-90 text-gray-400 hover:text-rose-500 hover:bg-opacity-100'
+          }`}
+          title={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+        >
+          <Heart className={`h-4 w-4 ${isInWishlist ? 'fill-current' : ''}`} />
+        </button>
         {!product.inStock && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white font-semibold text-lg">Out of Stock</span>
