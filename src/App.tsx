@@ -274,7 +274,6 @@ function App() {
                       value={searchQuery}
                       onChange={(e) => handleTextSearch(e.target.value)}
                       className="block w-full pl-12 pr-16 py-4 border border-gray-300 rounded-xl text-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Search for clothes, brands, or styles..."
                     />
                   </div>
                   
