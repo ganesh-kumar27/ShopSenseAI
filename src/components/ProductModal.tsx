@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Star, ShoppingBag, Heart, ExternalLink, Truck, Shield, RotateCcw } from 'lucide-react';
+import { X, Star, ShoppingBag, Heart, ExternalLink, Truck, Shield, RotateCcw, Plus, Minus } from 'lucide-react';
 import { Product } from '../types/Product';
 
 interface ProductModalProps {

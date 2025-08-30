@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, Camera, Calendar, User, Heart, ShoppingBag } from 'lucide-react';
 import Header from './components/Header';
 import ProductGrid from './components/ProductGrid';
-import SearchFilters from './components/SearchFilters';
+import SearchFiltersComponent from './components/SearchFilters';
 import ShoppingCart from './components/ShoppingCart';
 import ImageSearch from './components/ImageSearch';
 import ProductModal from './components/ProductModal';
@@ -406,7 +406,7 @@ function App() {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filters Sidebar */}
             <div className="lg:w-64 flex-shrink-0">
-              <SearchFilters
+              <SearchFiltersComponent
                 filters={filters}
                 onFiltersChange={setFilters}
                 availableCategories={availableCategories}
