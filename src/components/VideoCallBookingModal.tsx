@@ -17,10 +17,10 @@ const VideoCallBookingModal: React.FC<VideoCallBookingModalProps> = ({ store, is
   const [isBooking, setIsBooking] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-  if (!isOpen || !store) return null;
-
   // Generate next 7 business days for date selection
   const availableDates = useMemo(() => {
+    if (!store) return [];
+    
     const dates = [];
     const today = new Date();
     
@@ -52,6 +52,7 @@ const VideoCallBookingModal: React.FC<VideoCallBookingModalProps> = ({ store, is
   // Generate 15-minute time slots based on video call hours
   const availableTimeSlots = useMemo(() => {
     if (!selectedDate) return [];
+    if (!store) return [];
     
     const selectedDateInfo = availableDates.find(d => d.date === selectedDate);
     if (!selectedDateInfo || selectedDateInfo.hours === 'Closed') return [];
@@ -101,6 +102,8 @@ const VideoCallBookingModal: React.FC<VideoCallBookingModalProps> = ({ store, is
     
     return slots;
   }, [selectedDate, availableDates]);
+
+  if (!isOpen || !store) return null;
 
   const handleBooking = () => {
     if (!customerName.trim() || !customerPhone.trim() || !selectedDate || !selectedTime) {
