@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({
   onSearchChange,
   isOnlineMode,
   onModeToggle,
-  selectedOccasion
+  selectedOccasion,
   onBackToHome,
 }) => {
   return (
