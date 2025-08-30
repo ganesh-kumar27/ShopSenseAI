@@ -207,33 +207,33 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
 
             {/* Categories View */}
             {currentView === 'categories' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="flex flex-wrap gap-4 justify-center">
                 {occasionCategories.map((category) => (
                   <button
                     key={category.id}
                     onClick={() => handleCategoryClick(category)}
-                    className="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
+                    className="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 flex-shrink-0 w-48"
                   >
                     {/* Gradient Background */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
                     
                     {/* Content */}
-                    <div className="relative p-8 text-center">
-                      <div className="text-4xl mb-4">{category.icon}</div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-800">
+                    <div className="relative p-6 text-center">
+                      <div className="text-3xl mb-3">{category.icon}</div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-gray-800">
                         {category.name}
                       </h3>
-                      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      <p className="text-gray-600 text-xs mb-3 leading-relaxed">
                         {category.description}
                       </p>
                       <div className="flex items-center justify-center text-gray-400 group-hover:text-gray-600 transition-colors duration-200">
-                        <span className="text-sm font-medium mr-2">Explore</span>
+                        <span className="text-xs font-medium mr-1">Explore</span>
                         <ChevronRight className="h-4 w-4" />
                       </div>
                     </div>
 
                     {/* Item Count Badge */}
-                    <div className="absolute top-4 right-4 bg-gray-100 group-hover:bg-white text-gray-600 text-xs font-bold px-2 py-1 rounded-full transition-colors duration-200">
+                    <div className="absolute top-3 right-3 bg-gray-100 group-hover:bg-white text-gray-600 text-xs font-bold px-2 py-1 rounded-full transition-colors duration-200">
                       {category.items.length}
                     </div>
                   </button>
