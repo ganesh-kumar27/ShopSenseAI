@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Camera, Calendar, User } from 'lucide-react';
+import { Search, Camera, Calendar, User, Heart } from 'lucide-react';
 import Header from './components/Header';
 import ProductGrid from './components/ProductGrid';
 import SearchFilters from './components/SearchFilters';
@@ -206,6 +206,19 @@ function App() {
                   title="Profile"
                 >
                   <User className="h-6 w-6" />
+                </button>
+                
+                <button
+                  onClick={() => setShowWishlist(true)}
+                  className="relative p-2 text-gray-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors duration-200"
+                  title="Wishlist"
+                >
+                  <Heart className="h-6 w-6" />
+                  {wishlistItems.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {wishlistItems.length}
+                    </span>
+                  )}
                 </button>
               </div>
             </div>
