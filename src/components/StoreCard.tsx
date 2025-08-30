@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { Star, MapPin, Phone, Clock, ExternalLink, Navigation, X, Video } from 'lucide-react';
 import { Store } from '../types/Store';
 import CallSchedulingModal from './CallSchedulingModal';
-import CallSchedulingModal from './CallSchedulingModal';
 
 interface StoreCardProps {
   store: Store;
