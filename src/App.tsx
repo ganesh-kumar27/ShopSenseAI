@@ -257,24 +257,34 @@ function App() {
 
               {/* Shop by Occasion */}
               <div className="group">
-                <button
-                  onClick={() => setIsOccasionMenuOpen(true)}
-                  className="w-full bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100"
-                >
+                <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100">
                   <div className="mb-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                       <Calendar className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">Shop by Occasion</h3>
-                    <p className="text-gray-600 mb-6 text-center">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Shop by Occasion</h3>
+                    <p className="text-gray-600 mb-6">
                       Find perfect outfits for specific events and occasions
                     </p>
                   </div>
                   
-                  <div className="text-center">
-                    <span className="text-purple-600 font-medium">Browse All Occasions →</span>
+                  {/* Placeholder content to match search bar height */}
+                  <div className="mb-4 h-16 flex items-center justify-center">
+                    <button
+                      onClick={() => setIsOccasionMenuOpen(true)}
+                      className="bg-purple-600 hover:bg-purple-700 text-white py-4 px-8 rounded-xl transition-colors duration-200 font-semibold text-lg"
+                    >
+                      Browse All Occasions →
+                    </button>
                   </div>
-                </button>
+                  
+                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="h-4 w-4" />
+                      <span>Event-Based Shopping</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
