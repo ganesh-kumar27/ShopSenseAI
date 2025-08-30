@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Star, MapPin, Phone, Clock, Navigation, ExternalLink, Wifi, CreditCard, Video } from 'lucide-react';
 import { Store } from '../types/Store';
 import CallSchedulingModal from './CallSchedulingModal';
+import VideoCallBookingModal from './VideoCallBookingModal';
 
 interface StoreModalProps {
   store: Store | null;
@@ -11,6 +12,7 @@ interface StoreModalProps {
 
 const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
   const [showCallScheduling, setShowCallScheduling] = React.useState(false);
+  const [showVideoCallBooking, setShowVideoCallBooking] = React.useState(false);
 
   if (!isOpen || !store) return null;
 
@@ -36,8 +38,7 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
   };
 
   const handleVideoCall = () => {
-    // This would open the video call booking modal
-    alert(`Video call booking feature available!\n\nThis would open the video call slot booking interface where you can schedule a 15-minute consultation with ${store.name}.`);
+    setShowVideoCallBooking(true);
   };
 
   const status = getCurrentStatus();
@@ -265,6 +266,13 @@ const StoreModal: React.FC<StoreModalProps> = ({ store, isOpen, onClose }) => {
         store={store}
         isOpen={showCallScheduling}
         onClose={() => setShowCallScheduling(false)}
+      />
+
+      {/* Video Call Booking Modal */}
+      <VideoCallBookingModal
+        store={store}
+        isOpen={showVideoCallBooking}
+        onClose={() => setShowVideoCallBooking(false)}
       />
     </>
   );

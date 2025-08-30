@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { Star, MapPin, Phone, Clock, ExternalLink, Navigation, X, Video, Calendar } from 'lucide-react';
+import { Star, MapPin, Phone, Clock, ExternalLink, Navigation, X, Video } from 'lucide-react';
 import { Store } from '../types/Store';
 import CallSchedulingModal from './CallSchedulingModal';
 import VideoCallBookingModal from './VideoCallBookingModal';
@@ -172,7 +172,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onStoreClick }) => {
               title="Start Video Call"
             >
               <Video className="h-4 w-4" />
-              <span className="text-sm font-medium">Video</span>
+              <span className="text-sm font-medium">Call</span>
             </button>
           )}
           
