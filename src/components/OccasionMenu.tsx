@@ -81,9 +81,126 @@ const OccasionMenu: React.FC<OccasionMenuProps> = ({
       {/* Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50" onClick={onClose} />
       
-      {/* Menu Panel */}
-      <div className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-full max-w-md bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-purple-600 to-blue-600">
+      {/* Popup Dialog */}
+      <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[85vh] overflow-hidden">
+          <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-purple-600 to-blue-600">
+            <h2 className="text-xl font-semibold text-white flex items-center">
+              <Calendar className="h-6 w-6 mr-3" />
+              Shop by Occasion
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors duration-200"
+            >
+              <X className="h-5 w-5 text-white" />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto max-h-[calc(85vh-120px)]">
+            {selectedOccasion && (
+              <div className="mb-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Sparkles className="h-5 w-5 text-purple-600" />
+                    <div>
+                      <span className="text-sm font-medium text-purple-800">
+                        Currently shopping for:
+                      </span>
+                      <p className="text-lg font-semibold text-purple-900">
+                        {occasions.flatMap(cat => cat.items).find(item => item.id === selectedOccasion)?.name}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => onOccasionSelect('')}
+                    className="text-purple-600 hover:text-purple-700 font-medium text-sm bg-white px-3 py-1 rounded-lg border border-purple-300 hover:border-purple-400 transition-colors duration-200"
+                  >
+                    Clear selection
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {occasions.map((category) => (
+                <div key={category.category} className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                  <button
+                    onClick={() => setExpandedCategory(
+                      expandedCategory === category.category ? null : category.category
+                    )}
+                    className="w-full flex items-center justify-between p-3 bg-white hover:bg-gray-50 rounded-lg transition-colors duration-200 shadow-sm border border-gray-200"
+                  >
+                    <span className="font-semibold text-gray-900 text-lg">{category.category}</span>
+                    <ChevronDown 
+                      className={`h-5 w-5 text-gray-500 transition-transform duration-200 ${
+                        expandedCategory === category.category ? 'rotate-180' : ''
+                      }`} 
+                    />
+                  </button>
+                  
+                  {expandedCategory === category.category && (
+                    <div className="mt-3 space-y-2">
+                      {category.items.map((occasion) => (
+                        <button
+                          key={occasion.id}
+                          onClick={() => handleOccasionClick(occasion.id)}
+                          className={`w-full text-left p-4 rounded-lg transition-all duration-200 border-2 ${
+                            selectedOccasion === occasion.id 
+                              ? 'bg-purple-100 border-purple-300 shadow-md transform scale-[1.02]' 
+                              : 'bg-white border-gray-200 hover:border-purple-200 hover:bg-purple-50 hover:shadow-sm'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <h4 className={`font-medium mb-1 ${
+                                selectedOccasion === occasion.id ? 'text-purple-900' : 'text-gray-900'
+                              }`}>
+                                {occasion.name}
+                              </h4>
+                              <p className={`text-sm ${
+                                selectedOccasion === occasion.id ? 'text-purple-700' : 'text-gray-600'
+                              }`}>
+                                {occasion.description}
+                              </p>
+                            </div>
+                            {selectedOccasion === occasion.id && (
+                              <div className="ml-3 flex-shrink-0">
+                                <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <Sparkles className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-purple-900 mb-2">Personalized Recommendations</h4>
+                  <p className="text-sm text-purple-800 leading-relaxed">
+                    Our AI analyzes your profile preferences, size, style choices, and preferred brands to curate the perfect collection for your selected occasion. Get recommendations tailored specifically for you!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default OccasionMenu;
           <h2 className="text-lg font-semibold text-white flex items-center">
             <Calendar className="h-5 w-5 mr-2" />
             Shop by Occasion
