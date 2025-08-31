@@ -15,6 +15,7 @@ interface HeaderProps {
   onModeToggle: () => void;
   selectedOccasion: string;
   onBackToHome?: () => void;
+  showBackButton?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({

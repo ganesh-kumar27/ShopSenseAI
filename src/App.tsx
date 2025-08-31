@@ -444,7 +444,6 @@ function App() {
               <ProductGrid
                 products={displayProducts}
                 onProductClick={setSelectedProduct}
-                onAddToCart={handleAddToCart}
                 wishlistItems={wishlistItems}
                 onToggleWishlist={handleToggleWishlist}
               />
