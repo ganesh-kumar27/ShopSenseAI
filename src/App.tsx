@@ -120,6 +120,9 @@ function App() {
   const handleTextSearch = (query: string) => {
     setSearchQuery(query);
     setShowImageResults(false); // Clear image results when doing text search
+  };
+
+  const handleSearchSubmit = (query: string) => {
     if (query.trim()) {
       setCurrentView('search');
     }
@@ -139,6 +142,18 @@ function App() {
   };
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Listen for search submit events from header
+  React.useEffect(() => {
+    const handleSearchSubmitEvent = (event: CustomEvent) => {
+      handleSearchSubmit(event.detail);
+    };
+    
+    window.addEventListener('searchSubmit', handleSearchSubmitEvent as EventListener);
+    return () => {
+      window.removeEventListener('searchSubmit', handleSearchSubmitEvent as EventListener);
+    };
+  }, []);
 
   // Show profile page if selected
   if (showProfile) {
@@ -273,6 +288,11 @@ function App() {
                       type="text"
                       value={searchQuery}
                       onChange={(e) => handleTextSearch(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleSearchSubmit(searchQuery);
+                        }
+                      }}
                       className="block w-full pl-12 pr-16 py-4 border border-gray-300 rounded-xl text-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
