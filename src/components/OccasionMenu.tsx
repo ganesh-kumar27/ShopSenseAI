@@ -79,8 +79,6 @@ const occasionCategories = [
       { id: 'party', name: 'Parties', description: 'Social gatherings and celebrations', icon: '🎉' }
     ]
   },
-  {
-  }
 ];
 
 const OccasionMenu: React.FC<OccasionMenuProps> = ({
