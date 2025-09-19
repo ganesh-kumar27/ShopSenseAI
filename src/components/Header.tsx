@@ -15,7 +15,6 @@ interface HeaderProps {
   onModeToggle: () => void;
   selectedOccasion: string;
   onBackToHome?: () => void;
-  showBackButton?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -66,12 +65,6 @@ const Header: React.FC<HeaderProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && searchQuery.trim()) {
-                    // Trigger search action when Enter is pressed
-                    window.dispatchEvent(new CustomEvent('searchSubmit', { detail: searchQuery }));
-                  }
-                }}
                 className="block w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="Search for clothes, brands, or styles..."
               />
