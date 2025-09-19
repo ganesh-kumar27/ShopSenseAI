@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Star, ShoppingBag, Heart, ExternalLink, Truck, Shield, RotateCcw, Plus, Minus } from 'lucide-react';
+import { X, Star, ShoppingCart, Heart, Share2, Minus, Plus, Store } from 'lucide-react';
 import { Product } from '../types/Product';
 
 interface ProductModalProps {
@@ -15,12 +15,28 @@ const ProductModal: React.FC<ProductModalProps> = ({
   onClose,
   onAddToCart
 }) => {
-  const [selectedSize, setSelectedSize] = useState<string>('');
-  const [selectedColor, setSelectedColor] = useState<string>('');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!isOpen || !product) return null;
+
+  const getPlatformLogo = (platform: string) => {
+    const platformColors = {
+      'Myntra': 'text-pink-600',
+      'Flipkart': 'text-blue-600',
+      'Amazon': 'text-orange-500',
+      'Meesho': 'text-purple-600'
+    };
+    
+    return (
+      <div className={`flex items-center space-x-1 ${platformColors[platform as keyof typeof platformColors] || 'text-gray-600'}`}>
+        <Store className="h-4 w-4" />
+        <span className="text-sm font-medium">{platform}</span>
+      </div>
+    );
+  };
 
   const handleAddToCart = () => {
     onAddToCart(product, quantity, selectedSize, selectedColor);
@@ -36,7 +52,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
       <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           <div className="flex items-center justify-between p-6 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">Product Details</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Product Details</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200"
@@ -45,12 +61,12 @@ const ProductModal: React.FC<ProductModalProps> = ({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
-            {/* Product Images */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+            {/* Images */}
             <div className="space-y-4">
               <div className="aspect-square overflow-hidden rounded-lg bg-gray-100">
                 <img
-                  src={product.images[currentImageIndex]}
+                  src={product.images[selectedImageIndex]}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -61,9 +77,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   {product.images.map((image, index) => (
                     <button
                       key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 ${
-                        currentImageIndex === index ? 'border-blue-500' : 'border-gray-200'
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 ${
+                        selectedImageIndex === index
+                          ? 'border-blue-500'
+                          : 'border-gray-200'
                       }`}
                     >
                       <img
@@ -77,20 +95,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
               )}
             </div>
 
-            {/* Product Details */}
+            {/* Product Info */}
             <div className="space-y-6">
               <div>
-                <p className="text-sm text-blue-600 font-medium mb-1">{product.brand}</p>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h1>
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-2xl font-bold text-gray-900">${product.price}</span>
-                    {product.originalPrice && (
-                      <span className="text-lg text-gray-500 line-through">
-                        ${product.originalPrice}
-                      </span>
-                    )}
-                  </div>
+               {getPlatformLogo(product.platform)}
+                <p className="text-sm text-blue-600 font-medium">{product.brand}</p>
+                <h1 className="text-2xl font-bold text-gray-900 mt-1">{product.name}</h1>
+                
+                <div className="flex items-center mt-2">
                   <div className="flex items-center">
                     <Star className="h-4 w-4 fill-current text-yellow-400" />
                     <span className="ml-1 text-sm text-gray-600">
@@ -100,15 +112,23 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 </div>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
-                <p className="text-gray-600 leading-relaxed">{product.description}</p>
+              <div className="flex items-center space-x-4">
+                <span className="text-3xl font-bold text-gray-900">${product.price}</span>
+                {product.originalPrice && (
+                  <span className="text-xl text-gray-500 line-through">
+                    ${product.originalPrice}
+                  </span>
+                )}
               </div>
+
+              <p className="text-gray-600">{product.description}</p>
 
               {/* Size Selection */}
               {product.sizes.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">Size</h3>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Size
+                  </label>
                   <div className="flex flex-wrap gap-2">
                     {product.sizes.map((size) => (
                       <button
@@ -128,9 +148,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
               )}
 
               {/* Color Selection */}
-              {product.colors.length > 1 && (
+              {product.colors.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">Color</h3>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Color
+                  </label>
                   <div className="flex flex-wrap gap-2">
                     {product.colors.map((color) => (
                       <button
@@ -151,7 +173,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
               {/* Quantity */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Quantity</h3>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Quantity
+                </label>
                 <div className="flex items-center space-x-3">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -159,9 +183,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   >
                     <Minus className="h-4 w-4" />
                   </button>
-                  <span className="px-4 py-2 border border-gray-300 rounded-lg font-medium">
-                    {quantity}
-                  </span>
+                  <span className="w-12 text-center font-medium">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
@@ -172,39 +194,23 @@ const ProductModal: React.FC<ProductModalProps> = ({
               </div>
 
               {/* Actions */}
-              <div className="space-y-3">
+              <div className="flex space-x-4">
                 <button
                   onClick={handleAddToCart}
                   disabled={!product.inStock}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 px-6 rounded-lg transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"
                 >
-                  <ShoppingBag className="h-5 w-5" />
+                  <ShoppingCart className="h-5 w-5" />
                   <span>{product.inStock ? 'Add to Cart' : 'Out of Stock'}</span>
                 </button>
                 
-                <button
-                  onClick={() => window.open(`https://${product.platform.toLowerCase()}.com`, '_blank')}
-                  className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-4 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
-                >
-                  <ExternalLink className="h-5 w-5" />
-                  <span>View on {product.platform}</span>
+                <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                  <Heart className="h-5 w-5" />
                 </button>
-              </div>
-
-              {/* Product Info */}
-              <div className="space-y-3 pt-4 border-t">
-                <div className="flex items-center space-x-3 text-sm text-gray-600">
-                  <Truck className="h-4 w-4" />
-                  <span>Delivery: {product.deliveryTime}</span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm text-gray-600">
-                  <Shield className="h-4 w-4" />
-                  <span>Secure payment & buyer protection</span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm text-gray-600">
-                  <RotateCcw className="h-4 w-4" />
-                  <span>Easy returns & exchanges</span>
-                </div>
+                
+                <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                  <Share2 className="h-5 w-5" />
+                </button>
               </div>
             </div>
           </div>

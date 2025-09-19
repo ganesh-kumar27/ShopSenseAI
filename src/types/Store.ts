@@ -22,12 +22,12 @@ export interface Store {
   image: string;
   website?: string;
   features: string[];
-  hasPromotions: boolean;
-  promotionType: 'sale' | 'discount' | 'offer' | 'new' | 'none';
-  promotionText: string;
-  promotionDetails?: string;
-  promotionValidTill?: string;
+  reviewSummary: string;
   videoCallAvailable: boolean;
   videoCallHours?: string;
-  reviewSummary: string;
+  hasPromotions: boolean;
+  promotionText?: string;
+  promotionType?: 'sale' | 'discount' | 'offer' | 'new';
+  promotionDetails?: string;
+  promotionValidTill?: string;
 }

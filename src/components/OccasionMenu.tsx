@@ -80,6 +80,18 @@ const occasionCategories = [
     ]
   },
   {
+    id: 'special',
+    name: 'Special Occasions',
+    description: 'Unique and memorable events',
+    icon: '🎊',
+    color: 'from-indigo-500 to-indigo-600',
+    items: [
+      { id: 'graduation', name: 'Graduation', description: 'Academic ceremonies', icon: '🎓' },
+      { id: 'anniversary', name: 'Anniversary', description: 'Special milestone celebrations', icon: '💍' },
+      { id: 'birthday', name: 'Birthday Parties', description: 'Birthday celebrations', icon: '🎂' },
+      { id: 'holiday', name: 'Holiday Events', description: 'Festive holiday gatherings', icon: '🎄' },
+      { id: 'cultural', name: 'Cultural Events', description: 'Traditional and cultural occasions', icon: '🎨' }
+    ]
   }
 ];
 

@@ -26,7 +26,7 @@ const SearchFiltersComponent: React.FC<SearchFiltersProps> = ({
   };
 
   return (
-    <div className="bg-white p-4 lg:p-6 rounded-xl shadow-lg border border-gray-100 w-full">
+    <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">Filters</h3>
       
       {/* Category Filter */}
@@ -35,7 +35,7 @@ const SearchFiltersComponent: React.FC<SearchFiltersProps> = ({
         <select
           value={filters.category}
           onChange={(e) => updateFilters({ category: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">All Categories</option>
           {availableCategories.map(category => (
@@ -57,7 +57,7 @@ const SearchFiltersComponent: React.FC<SearchFiltersProps> = ({
           onChange={(e) => updateFilters({ 
             priceRange: [filters.priceRange[0], parseInt(e.target.value)] 
           })}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
         />
       </div>
 
